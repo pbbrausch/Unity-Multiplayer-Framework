@@ -60,7 +60,8 @@ public class LobbyManager : MonoBehaviour
 
         if (NetworkServer.active) { return; }
 
-        manager.networkAddress = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAddressKey);
+        manager.networkAddress = SteamMatchmaking.GetLobbyData(new CSteamID(currentLobbyID), HostAddressKey);
+        manager.StartClient();
 
         if (GameObject.Find("LobbyListMenu"))
         {
@@ -81,13 +82,13 @@ public class LobbyManager : MonoBehaviour
         switch (type)
         {
             case 0:
-                SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, manager.maxConnections);
-                break;
-            case 1:
                 SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, manager.maxConnections);
                 break;
-            case 2:
+            case 1:
                 SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePrivate, manager.maxConnections);
+                break;
+            case 2:
+                SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, manager.maxConnections);
                 break;
         }
     }

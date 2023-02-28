@@ -45,9 +45,9 @@ public class LobbyListManager : MonoBehaviour
 
     private void OnGetLobbiesList(LobbyMatchList_t result)
     {
-        Debug.Log("Found " + result.m_nLobbiesMatching + " lobbies!");
-
         DestroyOldLobbies();
+
+        Debug.Log("Found " + result.m_nLobbiesMatching + " lobbies!");
 
         for (int i = 0; i < result.m_nLobbiesMatching; i++)
         {
