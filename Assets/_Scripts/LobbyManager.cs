@@ -72,8 +72,21 @@ public class LobbyManager : MonoBehaviour
         SteamMatchmaking.JoinLobby(lobbyId);
     }
 
-    public void CreateLobby(ELobbyType type)
+    public void CreateLobby(int type, int maxPlayers)
     {
-        SteamMatchmaking.CreateLobby(type, manager.maxConnections);
+        manager.maxConnections = maxPlayers;
+
+        switch (type)
+        {
+            case 0:
+                SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, manager.maxConnections);
+                break;
+            case 1:
+                SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, manager.maxConnections);
+                break;
+            case 2:
+                SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePrivate, manager.maxConnections);
+                break;
+        }
     }
 }

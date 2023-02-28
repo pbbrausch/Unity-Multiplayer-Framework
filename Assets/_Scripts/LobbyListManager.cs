@@ -11,6 +11,7 @@ public class LobbyListManager : MonoBehaviour
     [SerializeField] private GameObject LobbyListItemPrefab;
     [SerializeField] private Transform content;
 
+    [HideInInspector] public bool reset;
 
     //Callbacks
     protected Callback<LobbyDataUpdate_t> lobbyData;
@@ -34,6 +35,7 @@ public class LobbyListManager : MonoBehaviour
 
     public void GetListOfLobbies()
     {
+        reset = false;
         if (lobbyIDS.Count > 0)
             lobbyIDS.Clear();
 
@@ -97,5 +99,6 @@ public class LobbyListManager : MonoBehaviour
                 return;
             }
         }
+
     }
 }

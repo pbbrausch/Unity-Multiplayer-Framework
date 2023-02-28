@@ -14,7 +14,6 @@ public class PlayerManager : NetworkBehaviour
 
     //Player Info (updated)
     [SyncVar(hook = nameof(PlayerNameUpdate))] public string username;
-    [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool ready;
 
     private CustomNetworkManager manager;
 
@@ -86,27 +85,6 @@ public class PlayerManager : NetworkBehaviour
         Debug.Log("Player name has been updated for: " + oldValue + " to new value: " + newValue);
         if (isServer)
             username = newValue;
-        if (isClient)
-            GameManager.instance.UpdatePlayerListItems();
-    }
-
-    //Ready Update
-    public void ChangeReady()
-    {
-        Debug.Log("Executing ChangeReadyStatus for player: " + username);
-        if (isOwned)
-            CmdPlayerReadyUpdate();
-    }
-    [Command]
-    private void CmdPlayerReadyUpdate()
-    {
-        Debug.Log("Executing CmdChangePlayerReadyStatus on the server for player: " + username);
-        PlayerReadyUpdate(ready, !ready);
-    }
-    private void PlayerReadyUpdate(bool oldValue, bool newValue)
-    {
-        if (isServer)
-            ready = newValue;
         if (isClient)
             GameManager.instance.UpdatePlayerListItems();
     }

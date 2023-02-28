@@ -6,11 +6,9 @@ using Steamworks;
 public class PlayerListItem : MonoBehaviour
 {
     [SerializeField] private TMP_Text nameText;
-    [SerializeField] private TMP_Text readyStatus;
     [SerializeField] private RawImage avatar;
 
     [HideInInspector] public bool avatarRecieved;
-    [HideInInspector] public bool ready;
     [HideInInspector] public ulong steamId;
     [HideInInspector] public int connectionID;
     [HideInInspector] public string username;
@@ -26,25 +24,8 @@ public class PlayerListItem : MonoBehaviour
     {
         nameText.text = name;
 
-        UpdateReadyStatus();
-
         if (!avatarRecieved)
             GetPlayerAvatar();
-    }
-
-    //Ready
-    public void UpdateReadyStatus()
-    {
-        if (ready)
-        {
-            readyStatus.text = "Ready";
-            readyStatus.color = Color.green;
-        }
-        else
-        {
-            readyStatus.text = "Not Ready";
-            readyStatus.color = Color.red;
-        }
     }
 
     //Avatar

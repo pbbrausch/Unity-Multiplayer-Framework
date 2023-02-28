@@ -74,7 +74,6 @@ public class GameManager : MonoBehaviour
 
             playerListItemScript.username = player.username;
             playerListItemScript.connectionID = player.connectionId;
-            playerListItemScript.ready = player.ready;
             playerListItemScript.steamId = player.steamId;
             playerListItemScript.SetPlayerListItemValues();
 
@@ -97,7 +96,6 @@ public class GameManager : MonoBehaviour
 
                 playerListItemScript.username = player.username;
                 playerListItemScript.connectionID = player.connectionId;
-                playerListItemScript.ready = player.ready;
                 playerListItemScript.steamId = player.steamId;
                 playerListItemScript.SetPlayerListItemValues();
 
@@ -136,39 +134,7 @@ public class GameManager : MonoBehaviour
                 if (playerListItemScript.connectionID == player.connectionId)
                 {
                     playerListItemScript.username = player.username;
-                    playerListItemScript.ready = player.ready;
                     playerListItemScript.SetPlayerListItemValues();
-                }
-            }
-        }
-        CheckPlayersReady();
-    }
-
-    private void CheckPlayersReady()
-    {
-        bool allReady = false;
-        foreach (PlayerManager player in Manager.PlayerManagers)
-        {
-            if (player.ready)
-            {
-                allReady = true;
-            }
-            else
-            {
-                startGameButton.interactable = false;
-                allReady = false;
-                break;
-            }
-        }
-
-        if (allReady)
-        {
-            foreach (PlayerManager player in Manager.PlayerManagers)
-            {
-                if (player.leader)
-                {
-                    startGameButton.interactable = true;
-                    break;
                 }
             }
         }
