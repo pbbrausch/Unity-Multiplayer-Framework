@@ -5,6 +5,7 @@ using Steamworks;
 
 public class PlayerListItem : MonoBehaviour
 {
+    public GameObject leaderIcon;
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private RawImage avatar;
 
@@ -22,7 +23,7 @@ public class PlayerListItem : MonoBehaviour
 
     public void SetPlayerListItemValues()
     {
-        nameText.text = name;
+        nameText.text = username;
 
         if (!avatarRecieved)
             GetPlayerAvatar();

@@ -21,6 +21,8 @@ public class LobbyManager : MonoBehaviour
 
     private void Start()
     {
+        manager = GetComponent<CustomNetworkManager>();
+
         //Check if initialized
         if (!SteamManager.Initialized) { return; }
 
@@ -72,7 +74,7 @@ public class LobbyManager : MonoBehaviour
         SteamMatchmaking.JoinLobby(lobbyId);
     }
 
-    public void CreateLobby(int type, int maxPlayers)
+    public void HostLobby(int type, int maxPlayers)
     {
         manager.maxConnections = maxPlayers;
 

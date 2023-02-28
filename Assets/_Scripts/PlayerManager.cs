@@ -2,10 +2,15 @@ using UnityEngine;
 using Steamworks;
 using Mirror;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 
 public class PlayerManager : NetworkBehaviour
 {
+    [Header("References")]
+    [SerializeField] private GameObject canvas;
+    public TMP_Text usernameText;
+
     //Player Info (static)
     [SyncVar] public ulong steamId;
     [SyncVar] public int playerIdNumber;
@@ -38,10 +43,25 @@ public class PlayerManager : NetworkBehaviour
     {
         CmdUpdatePlayerName(SteamFriends.GetPersonaName().ToString());
 
+        canvas.SetActive(false);
+
         gameObject.name = "LocalGamePlayer";
 
-        GameManager.instance.FindLocalPlayerManager();
         GameManager.instance.UpdateLobbyName();
+    }
+
+    public override void OnStartClient()
+    {
+        Manager.PlayerManagers.Add(this);
+        GameManager.instance.UpdateLobbyName();
+        GameManager.instance.UpdatePlayerListItems();
+    }
+
+    public override void OnStopClient()
+    {
+        Manager.PlayerManagers.Remove(this);
+        GameManager.instance.UpdatePlayerListItems();
+        Debug.Log(username + " is quiting the game.");
     }
 
     //Leave Lobby
@@ -66,12 +86,6 @@ public class PlayerManager : NetworkBehaviour
             print("Destroy List");
         }
     }
-    public override void OnStopClient()
-    {
-        Manager.PlayerManagers.Remove(this);
-        GameManager.instance.UpdatePlayerListItems();
-        Debug.Log(username + " is quiting the game.");
-    }
 
     //Name Update
     [Command]
@@ -82,7 +96,6 @@ public class PlayerManager : NetworkBehaviour
     }
     private void PlayerNameUpdate(string oldValue, string newValue)
     {
-        Debug.Log("Player name has been updated for: " + oldValue + " to new value: " + newValue);
         if (isServer)
             username = newValue;
         if (isClient)

@@ -10,14 +10,12 @@ public class GameManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject playerListItemPrefab;
-    [SerializeField] private Button startGameButton;
     [SerializeField] private TMP_Text lobbyNameText;
     [SerializeField] private Transform content;
 
     public static GameManager instance;
 
-    private bool PlayerItemCreated;
-    private PlayerManager localPlayerManager;
+    private bool PlayerItemsCreated;
     private List<PlayerListItem> playerListItems = new();
 
     private CustomNetworkManager manager;
@@ -39,12 +37,6 @@ public class GameManager : MonoBehaviour
         if (instance == null) { instance = this; }
     }
 
-    //Get Local Player
-    public void FindLocalPlayerManager()
-    {
-        localPlayerManager = GameObject.Find("LocalGamePlayer").GetComponent<PlayerManager>();
-    }
-
     //Update Lobby Data
     public void UpdateLobbyName()
     {
@@ -54,7 +46,7 @@ public class GameManager : MonoBehaviour
     //Update PlayerListITems
     public void UpdatePlayerListItems()
     {
-        if (!PlayerItemCreated)
+        if (!PlayerItemsCreated)
             CreateListItems();
         if (playerListItems.Count < Manager.PlayerManagers.Count)
             CreateNewListItems();
@@ -72,6 +64,8 @@ public class GameManager : MonoBehaviour
             GameObject playerListItem = Instantiate(playerListItemPrefab);
             PlayerListItem playerListItemScript = playerListItem.GetComponent<PlayerListItem>();
 
+            if (player.leader)
+                playerListItemScript.leaderIcon.SetActive(true);
             playerListItemScript.username = player.username;
             playerListItemScript.connectionID = player.connectionId;
             playerListItemScript.steamId = player.steamId;
@@ -83,7 +77,7 @@ public class GameManager : MonoBehaviour
             playerListItems.Add(playerListItemScript);
         }
 
-        PlayerItemCreated = true;
+        PlayerItemsCreated = true;
     }
     private void CreateNewListItems()
     {
@@ -94,7 +88,10 @@ public class GameManager : MonoBehaviour
                 GameObject playerListItem = Instantiate(playerListItemPrefab);
                 PlayerListItem playerListItemScript = playerListItem.GetComponent<PlayerListItem>();
 
+                if (player.leader)
+                    playerListItemScript.leaderIcon.SetActive(true);
                 playerListItemScript.username = player.username;
+                player.usernameText.text = playerListItemScript.username;
                 playerListItemScript.connectionID = player.connectionId;
                 playerListItemScript.steamId = player.steamId;
                 playerListItemScript.SetPlayerListItemValues();
