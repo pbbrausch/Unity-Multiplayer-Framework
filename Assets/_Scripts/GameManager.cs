@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour
             if (player.leader)
                 playerListItemScript.leaderIcon.SetActive(true);
             playerListItemScript.username = player.username;
+            player.usernameText.text = player.username;
             playerListItemScript.connectionID = player.connectionId;
             playerListItemScript.steamId = player.steamId;
             playerListItemScript.SetPlayerListItemValues();
@@ -91,7 +92,7 @@ public class GameManager : MonoBehaviour
                 if (player.leader)
                     playerListItemScript.leaderIcon.SetActive(true);
                 playerListItemScript.username = player.username;
-                player.usernameText.text = playerListItemScript.username;
+                player.usernameText.text = player.username;
                 playerListItemScript.connectionID = player.connectionId;
                 playerListItemScript.steamId = player.steamId;
                 playerListItemScript.SetPlayerListItemValues();
@@ -131,6 +132,7 @@ public class GameManager : MonoBehaviour
                 if (playerListItemScript.connectionID == player.connectionId)
                 {
                     playerListItemScript.username = player.username;
+                    player.usernameText.text = player.username;
                     playerListItemScript.SetPlayerListItemValues();
                 }
             }
