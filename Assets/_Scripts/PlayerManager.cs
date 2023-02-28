@@ -10,6 +10,7 @@ public class PlayerManager : NetworkBehaviour
     [Header("References")]
     [SerializeField] private GameObject clientSide;
     [SerializeField] private GameObject serverSide;
+    public Transform userInfoCanvas;
     public TMP_Text usernameText;
 
     //Player Info (static)

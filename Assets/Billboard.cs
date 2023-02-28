@@ -13,6 +13,7 @@ public class Billboard : MonoBehaviour
 
     private void LateUpdate()
     {
-        transform.LookAt(transform.position + camPos.rotation * Vector3.forward, camPos.rotation * Vector3.up);
+        if (camPos)
+            transform.LookAt(transform.position + camPos.rotation * Vector3.forward, camPos.rotation * Vector3.up);
     }
 }

@@ -167,8 +167,9 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  clientSide: {fileID: 0}
-  serverSide: {fileID: 0}
+  clientSide: {fileID: 6575335503807255756}
+  serverSide: {fileID: 3483489299063875561}
+  userInfoCanvas: {fileID: 6435179858606456498}
   usernameText: {fileID: 1349336296381227535}
   steamId: 0
   playerIdNumber: 0
@@ -299,8 +300,8 @@ GameObject:
   - component: {fileID: 7370428278615145730}
   - component: {fileID: 739623731989097347}
   m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: MainCamera
+  m_Name: Camera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -660,6 +661,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7801834171065153847}
+  - component: {fileID: 786238117760971123}
   m_Layer: 0
   m_Name: Client Side
   m_TagString: Untagged
@@ -683,3 +685,16 @@ Transform:
   m_Father: {fileID: 2991004049896569901}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &786238117760971123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6575335503807255756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae6593b9d994ef74785ec435f0e6c7f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camPos: {fileID: 5390862083641737132}
