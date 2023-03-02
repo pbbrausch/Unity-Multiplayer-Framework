@@ -20,7 +20,7 @@ public class LobbyListManager : MonoBehaviour
     private readonly List<GameObject> lobbyListItems = new();
     private readonly List<CSteamID> lobbyIDS = new();
 
-    private void Start()
+    private void Awake()
     {
         //Check if initialized
         if (!SteamManager.Initialized) { return; }

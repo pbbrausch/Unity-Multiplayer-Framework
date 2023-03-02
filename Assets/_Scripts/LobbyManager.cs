@@ -19,7 +19,7 @@ public class LobbyManager : MonoBehaviour
 
     private CustomNetworkManager manager;
 
-    private void Start()
+    private void Awake()
     {
         manager = GetComponent<CustomNetworkManager>();
 

@@ -37,7 +37,7 @@ public class PlayerManager : NetworkBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         DontDestroyOnLoad(gameObject);
     }
@@ -72,7 +72,9 @@ public class PlayerManager : NetworkBehaviour
     //Leave Lobby
     public void LeaveLobby()
     {
-        SceneManager.LoadScene("MainMenu");
+        Manager.offlineScene = "";
+
+        SceneManager.LoadScene("Main");
 
         GameManager.instance.DestroyPlayerListItems();
 

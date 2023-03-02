@@ -16,7 +16,7 @@ public class PlayerListItem : MonoBehaviour
 
     protected Callback<AvatarImageLoaded_t> avatarImageLoaded;
 
-    private void Start()
+    private void Awake()
     {
         avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
     }
