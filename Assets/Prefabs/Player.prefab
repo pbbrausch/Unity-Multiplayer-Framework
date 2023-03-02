@@ -154,8 +154,8 @@ MonoBehaviour:
   syncDirection: 1
   syncMode: 0
   syncInterval: 0.1
-  clientSide: {fileID: 6575335503807255756}
   serverSide: {fileID: 3483489299063875561}
+  clientSide: {fileID: 1519042905595248955}
   userInfoCanvas: {fileID: 6435179858606456498}
   usernameText: {fileID: 1349336296381227535}
   steamId: 0

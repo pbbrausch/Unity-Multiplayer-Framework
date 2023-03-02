@@ -6,7 +6,7 @@ using Mirror;
 public class Client : MonoBehaviour
 {
     [SerializeField] private Transform camPos;
-    [HideInInspector] public List<Transform> userInfoCanvases = new();
+    public List<Transform> userInfoCanvases = new();
 
     private void LateUpdate()
     {

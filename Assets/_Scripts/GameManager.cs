@@ -40,10 +40,10 @@ public class GameManager : MonoBehaviour
         if (instance == null) { instance = this; }
     }
 
-    private void FindLocalPlayerScripts()
+    public void FindLocalPlayerScripts()
     {
         localPlayerManager = GameObject.Find("LocalGamePlayer").GetComponent<PlayerManager>();
-        localPlayerClient = localPlayerManager.GetComponentInChildren<Client>();
+        localPlayerClient = localPlayerManager.clientSide;
     }
 
     //QuitLobby
@@ -148,7 +148,8 @@ public class GameManager : MonoBehaviour
     }
     private void UpdateListItems()
     {
-        localPlayerClient.userInfoCanvases.Clear();
+        if (localPlayerClient)
+            localPlayerClient.userInfoCanvases.Clear();
 
         foreach (PlayerManager playerManager in Manager.PlayerManagers)
         {
@@ -167,7 +168,8 @@ public class GameManager : MonoBehaviour
                     foreach (PlayerManager otherPlayerManger in Manager.PlayerManagers)
                     {
                         if (otherPlayerManger.connectionId != localPlayerManager.connectionId)
-                            localPlayerClient.userInfoCanvases.Add(otherPlayerManger.userInfoCanvas.transform);
+                            if (localPlayerClient)
+                                localPlayerClient.userInfoCanvases.Add(otherPlayerManger.userInfoCanvas.transform);
                     }
                 }
             }

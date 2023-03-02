@@ -9,8 +9,8 @@ using TMPro;
 public class PlayerManager : NetworkBehaviour
 {
     [Header("References")]
-    [SerializeField] private GameObject clientSide;
     [SerializeField] private GameObject serverSide;
+    public Client clientSide;
     public Transform userInfoCanvas;
     public TMP_Text usernameText;
 
@@ -46,12 +46,13 @@ public class PlayerManager : NetworkBehaviour
     {
         CmdUpdatePlayerName(SteamFriends.GetPersonaName().ToString());
 
-        serverSide.SetActive(false);
-        clientSide.SetActive(true);
-
         gameObject.name = "LocalGamePlayer";
 
+        GameManager.instance.FindLocalPlayerScripts();
         GameManager.instance.UpdateLobbyName();
+
+        serverSide.SetActive(false);
+        clientSide.gameObject.SetActive(true);
     }
 
     public override void OnStartClient()
