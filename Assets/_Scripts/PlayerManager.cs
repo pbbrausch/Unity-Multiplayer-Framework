@@ -48,11 +48,11 @@ public class PlayerManager : NetworkBehaviour
 
         gameObject.name = "LocalGamePlayer";
 
-        GameManager.instance.FindLocalPlayerScripts();
+        GameManager.instance.FindLocalPlayerManager();
         GameManager.instance.UpdateLobbyName();
 
-        serverSide.SetActive(false);
         clientSide.gameObject.SetActive(true);
+        serverSide.SetActive(false);
     }
 
     public override void OnStartClient()
