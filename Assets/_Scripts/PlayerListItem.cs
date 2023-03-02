@@ -56,21 +56,18 @@ public class PlayerListItem : MonoBehaviour
 
     private Texture2D GetSteamImageAsTexture(int iImage)
     {
-        Debug.Log("Executing GetSteamImageAsTexture for player: " + name);
         Texture2D texture = null;
 
         bool isValid = SteamUtils.GetImageSize(iImage, out uint width, out uint height);
 
         if (isValid)
         {
-            Debug.Log("GetSteamImageAsTexture: Image size is valid?");
             byte[] image = new byte[width * height * 4];
 
             isValid = SteamUtils.GetImageRGBA(iImage, image, (int)(width * height * 4));
 
             if (isValid)
             {
-                Debug.Log("GetSteamImageAsTexture: Image size is valid for GetImageRBGA?");
                 texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false, true);
                 texture.LoadRawTextureData(image);
                 texture.Apply();

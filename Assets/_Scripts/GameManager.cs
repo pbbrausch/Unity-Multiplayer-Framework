@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+    private PlayerManager localPlayerManager;
+    private Client localPlayerClient;
+
     private bool PlayerItemsCreated;
     private List<PlayerListItem> playerListItems = new();
 
@@ -37,6 +40,18 @@ public class GameManager : MonoBehaviour
         if (instance == null) { instance = this; }
     }
 
+    private void FindLocalPlayerScripts()
+    {
+        localPlayerManager = GameObject.Find("LocalGamePlayer").GetComponent<PlayerManager>();
+        localPlayerClient = localPlayerManager.GetComponentInChildren<Client>();
+    }
+
+    //QuitLobby
+    public void LeaveLobby()
+    {
+        localPlayerManager.LeaveLobby();
+    }
+
     //Update Lobby Data
     public void UpdateLobbyName()
     {
@@ -46,32 +61,33 @@ public class GameManager : MonoBehaviour
     //Update PlayerListITems
     public void UpdatePlayerListItems()
     {
-        if (!PlayerItemsCreated)
-            CreateListItems();
-        if (playerListItems.Count < Manager.PlayerManagers.Count)
-            CreateNewListItems();
-        if (playerListItems.Count > Manager.PlayerManagers.Count)
-            RemoveListItems();
-        if (playerListItems.Count == Manager.PlayerManagers.Count)
-            UpdateListItems();
+        if (!PlayerItemsCreated) { CreateListItems(); }
+        if (playerListItems.Count < Manager.PlayerManagers.Count) { CreateNewListItems(); }
+        if (playerListItems.Count > Manager.PlayerManagers.Count) { RemoveListItems(); }
+        if (playerListItems.Count == Manager.PlayerManagers.Count) { UpdateListItems(); }
     }
 
     //Player List Items
     private void CreateListItems()
     {
-        foreach (PlayerManager player in Manager.PlayerManagers)
+        foreach (PlayerManager playerManager in Manager.PlayerManagers)
         {
             GameObject playerListItem = Instantiate(playerListItemPrefab);
             PlayerListItem playerListItemScript = playerListItem.GetComponent<PlayerListItem>();
 
-            if (player.leader)
+            //PlayerManager
+            if (playerManager.leader)
                 playerListItemScript.leaderIcon.SetActive(true);
-            playerListItemScript.username = player.username;
-            player.usernameText.text = player.username;
-            playerListItemScript.connectionID = player.connectionId;
-            playerListItemScript.steamId = player.steamId;
+
+            playerManager.usernameText.text = playerManager.username;
+
+            //PlayerListItemScript
+            playerListItemScript.username = playerManager.username;
+            playerListItemScript.connectionID = playerManager.connectionId;
+            playerListItemScript.steamId = playerManager.steamId;
             playerListItemScript.SetPlayerListItemValues();
 
+            //PlayerListItem
             playerListItem.transform.SetParent(content);
             playerListItem.transform.localScale = Vector3.one;
 
@@ -82,21 +98,26 @@ public class GameManager : MonoBehaviour
     }
     private void CreateNewListItems()
     {
-        foreach (PlayerManager player in Manager.PlayerManagers)
+        foreach (PlayerManager playerManager in Manager.PlayerManagers)
         {
-            if (!playerListItems.Any(b => b.connectionID == player.connectionId))
+            if (!playerListItems.Any(b => b.connectionID == playerManager.connectionId))
             {
                 GameObject playerListItem = Instantiate(playerListItemPrefab);
                 PlayerListItem playerListItemScript = playerListItem.GetComponent<PlayerListItem>();
 
-                if (player.leader)
+                //PlayerManager
+                if (playerManager.leader)
                     playerListItemScript.leaderIcon.SetActive(true);
-                playerListItemScript.username = player.username;
-                player.usernameText.text = player.username;
-                playerListItemScript.connectionID = player.connectionId;
-                playerListItemScript.steamId = player.steamId;
+
+                playerManager.usernameText.text = playerManager.username;
+
+                //PlayerListItemScript
+                playerListItemScript.username = playerManager.username;
+                playerListItemScript.connectionID = playerManager.connectionId;
+                playerListItemScript.steamId = playerManager.steamId;
                 playerListItemScript.SetPlayerListItemValues();
 
+                //PlayerListItem
                 playerListItem.transform.SetParent(content);
                 playerListItem.transform.localScale = Vector3.one;
 
@@ -107,6 +128,7 @@ public class GameManager : MonoBehaviour
     private void RemoveListItems()
     {
         List<PlayerListItem> playerListItemsToRemove = new();
+
         foreach (PlayerListItem playerListItem in playerListItems)
         {
             if (!Manager.PlayerManagers.Any(b => b.connectionId == playerListItem.connectionID))
@@ -114,6 +136,7 @@ public class GameManager : MonoBehaviour
                 playerListItemsToRemove.Add(playerListItem);
             }
         }
+
         if (playerListItemsToRemove.Count > 0)
         {
             foreach (PlayerListItem playerListItemToRemove in playerListItemsToRemove)
@@ -125,15 +148,27 @@ public class GameManager : MonoBehaviour
     }
     private void UpdateListItems()
     {
-        foreach (PlayerManager player in Manager.PlayerManagers)
+        localPlayerClient.userInfoCanvases.Clear();
+
+        foreach (PlayerManager playerManager in Manager.PlayerManagers)
         {
             foreach (PlayerListItem playerListItemScript in playerListItems)
             {
-                if (playerListItemScript.connectionID == player.connectionId)
+                if (playerListItemScript.connectionID == playerManager.connectionId)
                 {
-                    playerListItemScript.username = player.username;
-                    player.usernameText.text = player.username;
+                    //PlayerManager
+                    //playerManager.usernameText.text = playerManager.username;
+
+                    //PlayerListItemScript
+                    playerListItemScript.username = playerManager.username;
                     playerListItemScript.SetPlayerListItemValues();
+
+                    //UserInfoCanvas's
+                    foreach (PlayerManager otherPlayerManger in Manager.PlayerManagers)
+                    {
+                        if (otherPlayerManger.connectionId != localPlayerManager.connectionId)
+                            localPlayerClient.userInfoCanvases.Add(otherPlayerManger.userInfoCanvas.transform);
+                    }
                 }
             }
         }
@@ -145,6 +180,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(playerListItem.gameObject);
         }
+
         playerListItems.Clear();
     }
 }

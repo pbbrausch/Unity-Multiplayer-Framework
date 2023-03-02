@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0c3526eb37fbe49aff6c477029cbdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
+  syncDirection: 1
   syncMode: 0
   syncInterval: 0.1
   clientSide: {fileID: 6575335503807255756}
@@ -252,7 +252,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6265992744058285188}
   m_Layer: 0
-  m_Name: Server Side
+  m_Name: Server
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -648,9 +648,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7801834171065153847}
-  - component: {fileID: 786238117760971123}
+  - component: {fileID: 1519042905595248955}
   m_Layer: 0
-  m_Name: Client Side
+  m_Name: Client
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -672,7 +672,7 @@ Transform:
   m_Father: {fileID: 2991004049896569901}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &786238117760971123
+--- !u!114 &1519042905595248955
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -685,3 +685,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camPos: {fileID: 5390862083641737132}
+  userInfoCanvases: []

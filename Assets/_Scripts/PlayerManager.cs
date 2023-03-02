@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using Steamworks;
 using Mirror;
@@ -71,9 +72,10 @@ public class PlayerManager : NetworkBehaviour
     public void LeaveLobby()
     {
         SceneManager.LoadScene("MainMenu");
+
         GameManager.instance.DestroyPlayerListItems();
+
         SteamMatchmaking.LeaveLobby((CSteamID)LobbyManager.instance.currentLobbyID);
-        print("Leave lobby");
 
         if (isOwned)
         {
@@ -85,8 +87,6 @@ public class PlayerManager : NetworkBehaviour
             {
                 Manager.StopClient();
             }
-
-            print("Destroy List");
         }
     }
 
@@ -100,8 +100,12 @@ public class PlayerManager : NetworkBehaviour
     private void PlayerNameUpdate(string oldValue, string newValue)
     {
         if (isServer)
+        {
             username = newValue;
+        }
         if (isClient)
+        {
             GameManager.instance.UpdatePlayerListItems();
+        }
     }
 }
