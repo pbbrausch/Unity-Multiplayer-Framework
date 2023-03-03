@@ -40,8 +40,6 @@ public class PlayerManager : NetworkBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-
-        SceneManager.activeSceneChanged += ChangedScene;
     }
 
     public override void OnStartAuthority()
@@ -71,30 +69,28 @@ public class PlayerManager : NetworkBehaviour
         Debug.Log(username + " is quiting the game.");
     }
 
-    private void ChangedScene(Scene current, Scene next)
+    //Leave Lobby
+    [Command]
+    public void CmdLeaveLobby()
     {
-        if (next.name == "Main" && isOwned)
-        {
-            Manager.offlineScene = "";
-
-            LobbyManager.instance.LeaveLobby((CSteamID)LobbyManager.instance.currentLobbyID);
-
-            if (isServer)
-            {
-                Manager.StopHost();
-            }
-            else
-            {
-                Manager.StopClient();
-            }
-        }
+        LeaveLobby();
     }
 
-    public void LeaveLobby()
+    private void LeaveLobby()
     {
-        if (isOwned)
+        Manager.offlineScene = "";
+
+        SceneManager.LoadScene("Main");
+
+        LobbyManager.instance.LeaveLobby((CSteamID)LobbyManager.instance.currentLobbyID);
+
+        if (isServer)
         {
-            SceneManager.LoadScene("Main");
+            Manager.StopHost();
+        }
+        else
+        {
+            Manager.StopClient();
         }
     }
 
@@ -102,9 +98,10 @@ public class PlayerManager : NetworkBehaviour
     [Command]
     private void CmdUpdatePlayerName(string name)
     {
-        Debug.Log("CmdSetPlayerName: Setting username name to: " + name);
+        Debug.Log("Setting username name to: " + name);
         PlayerNameUpdate(username, name);
     }
+
     private void PlayerNameUpdate(string oldValue, string newValue)
     {
         if (isServer)

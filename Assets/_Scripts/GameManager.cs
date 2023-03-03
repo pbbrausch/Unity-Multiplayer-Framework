@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     //QuitLobby
     public void LeaveLobby()
     {
-        localPlayerManager.LeaveLobby();
+        localPlayerManager.CmdLeaveLobby();
     }
 
     //Update Lobby Data
@@ -77,8 +77,6 @@ public class GameManager : MonoBehaviour
             if (playerManager.leader)
                 playerListItemScript.leaderIcon.SetActive(true);
 
-            playerManager.usernameText.text = playerManager.username;
-
             //PlayerListItemScript
             playerListItemScript.username = playerManager.username;
             playerListItemScript.connectionID = playerManager.connectionId;
@@ -106,8 +104,6 @@ public class GameManager : MonoBehaviour
                 //PlayerManager
                 if (playerManager.leader)
                     playerListItemScript.leaderIcon.SetActive(true);
-
-                playerManager.usernameText.text = playerManager.username;
 
                 //PlayerListItemScript
                 playerListItemScript.username = playerManager.username;

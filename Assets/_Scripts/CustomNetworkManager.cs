@@ -7,7 +7,7 @@ public class CustomNetworkManager : NetworkManager
 {
     [SerializeField] private PlayerManager playerManager;
 
-    public List<PlayerManager> PlayerManagers { get; } = new List<PlayerManager>();
+    public List<PlayerManager> PlayerManagers { get; } = new();
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
