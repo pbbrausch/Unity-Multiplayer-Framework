@@ -21,7 +21,7 @@ public class PlayerManager : NetworkBehaviour
     [SyncVar] public bool leader;
 
     //Player Info (updated)
-    [SyncVar(hook = nameof(PlayerNameUpdate))] public string username;
+    [SyncVar(hook = nameof(SetPlayerName))] public string username;
 
     private CustomNetworkManager manager;
 
@@ -44,12 +44,11 @@ public class PlayerManager : NetworkBehaviour
 
     public override void OnStartAuthority()
     {
-        CmdUpdatePlayerName(SteamFriends.GetPersonaName().ToString());
+        CmdSetPlayerName(SteamFriends.GetPersonaName().ToString());
 
         gameObject.name = "LocalGamePlayer";
 
         GameManager.instance.FindLocalPlayerManager();
-        GameManager.instance.UpdateLobbyName();
 
         clientSide.SetActive(true);
         serverSide.SetActive(false);
@@ -96,13 +95,13 @@ public class PlayerManager : NetworkBehaviour
 
     //Name Update
     [Command]
-    private void CmdUpdatePlayerName(string name)
+    private void CmdSetPlayerName(string name)
     {
         Debug.Log("Setting username name to: " + name);
-        PlayerNameUpdate(username, name);
+        SetPlayerName(username, name);
     }
 
-    private void PlayerNameUpdate(string oldValue, string newValue)
+    private void SetPlayerName(string oldValue, string newValue)
     {
         if (isServer)
         {
