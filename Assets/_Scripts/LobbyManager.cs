@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using Steamworks;
+using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class LobbyManager : MonoBehaviour
         //Instance Create
         if (instance == null) { instance = this; }
 
-        //Create Callbacks For Lobby
+        //Create Callbacks for Lobby
         joinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnJoinRequested);
         lobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
         lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
@@ -61,6 +62,7 @@ public class LobbyManager : MonoBehaviour
         if (NetworkServer.active) { return; }
 
         manager.networkAddress = SteamMatchmaking.GetLobbyData(new CSteamID(currentLobbyID), HostAddressKey);
+
         manager.StartClient();
 
         if (GameObject.Find("LobbyListMenu"))
@@ -75,8 +77,15 @@ public class LobbyManager : MonoBehaviour
         SteamMatchmaking.JoinLobby(lobbyId);
     }
 
+    public void LeaveLobby(CSteamID lobbyID)
+    {
+        SteamMatchmaking.LeaveLobby(lobbyID);
+    }
+
     public void HostLobby(int type, int maxPlayers)
     {
+        Debug.Log("Hosting lobby");
+
         manager.maxConnections = maxPlayers;
 
         switch (type)

@@ -8,15 +8,14 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+
     [Header("References")]
     [SerializeField] private GameObject playerListItemPrefab;
     [SerializeField] private TMP_Text lobbyNameText;
     [SerializeField] private Transform content;
 
-    public static GameManager instance;
-
     private PlayerManager localPlayerManager;
-    private Client localPlayerClient;
 
     private bool PlayerItemsCreated;
     private List<PlayerListItem> playerListItems = new();
@@ -132,7 +131,7 @@ public class GameManager : MonoBehaviour
         {
             if (!Manager.PlayerManagers.Any(b => b.connectionId == playerListItem.connectionID))
             {
-                playerListItemsToRemove.Add(playerListItem);
+                if (playerListItem) { playerListItemsToRemove.Add(playerListItem); }
             }
         }
 
@@ -163,15 +162,4 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    public void DestroyPlayerListItems()
-    {
-        foreach (PlayerListItem playerListItem in playerListItems)
-        {
-            Destroy(playerListItem.gameObject);
-        }
-
-        playerListItems.Clear();
-    }
 }
-

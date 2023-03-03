@@ -18,7 +18,7 @@ public class LobbyListManager : MonoBehaviour
     protected Callback<LobbyMatchList_t> lobbyList;
 
     private readonly List<GameObject> lobbyListItems = new();
-    private readonly List<CSteamID> lobbyIDS = new();
+    private readonly List<CSteamID> lobbyIDs = new();
 
     private void Awake()
     {
@@ -35,9 +35,7 @@ public class LobbyListManager : MonoBehaviour
 
     public void GetListOfLobbies()
     {
-        reset = false;
-        if (lobbyIDS.Count > 0)
-            lobbyIDS.Clear();
+        if (lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
 
         SteamMatchmaking.AddRequestLobbyListResultCountFilter(100);
         SteamMatchmaking.RequestLobbyList();
@@ -45,21 +43,21 @@ public class LobbyListManager : MonoBehaviour
 
     private void OnGetLobbiesList(LobbyMatchList_t result)
     {
-        DestroyOldLobbies();
+        if (lobbyListItems.Count > 0) { DestroyOldLobbies(); }
 
         Debug.Log("Found " + result.m_nLobbiesMatching + " lobbies!");
 
-        for (int i = 0; i < result.m_nLobbiesMatching; i++)
+        for (int i=0; i < result.m_nLobbiesMatching; i++)
         {
             CSteamID lobbyID = SteamMatchmaking.GetLobbyByIndex(i);
-            lobbyIDS.Add(lobbyID);
+            lobbyIDs.Add(lobbyID);
             SteamMatchmaking.RequestLobbyData(lobbyID);
         }
     }
 
     private void OnGetLobbyData(LobbyDataUpdate_t result)
     {
-        DisplayLobbies(lobbyIDS, result);
+        DisplayLobbies(lobbyIDs, result);
     }
 
     public void DestroyOldLobbies()
@@ -74,21 +72,21 @@ public class LobbyListManager : MonoBehaviour
         lobbyListItems.Clear();
     }
 
-    private void DisplayLobbies(List<CSteamID> lobbyIDS, LobbyDataUpdate_t result)
+    private void DisplayLobbies(List<CSteamID> lobbyIDs, LobbyDataUpdate_t result)
     {
-        for (int i = 0; i < lobbyIDS.Count; i++)
+        for (int i=0; i < lobbyIDs.Count; i++)
         {
-            if (lobbyIDS[i].m_SteamID == result.m_ulSteamIDLobby)
+            if (lobbyIDs[i].m_SteamID == result.m_ulSteamIDLobby)
             {
                 Debug.Log("Player searched for lobbies");
 
                 GameObject lobbyListItem = Instantiate(LobbyListItemPrefab);
                 LobbyListItem lobbyListItemScript = lobbyListItem.GetComponent<LobbyListItem>();
 
-                lobbyListItemScript.lobbyId = (CSteamID)lobbyIDS[i].m_SteamID;
-                lobbyListItemScript.lobbyName = SteamMatchmaking.GetLobbyData((CSteamID)lobbyIDS[i].m_SteamID, "name");
-                lobbyListItemScript.numberOfPlayers = SteamMatchmaking.GetNumLobbyMembers((CSteamID)lobbyIDS[i].m_SteamID);
-                lobbyListItemScript.maxNumberOfPlayers = SteamMatchmaking.GetLobbyMemberLimit((CSteamID)lobbyIDS[i].m_SteamID);
+                lobbyListItemScript.lobbyId = (CSteamID)lobbyIDs[i].m_SteamID;
+                lobbyListItemScript.lobbyName = SteamMatchmaking.GetLobbyData((CSteamID)lobbyIDs[i].m_SteamID, "name");
+                lobbyListItemScript.numberOfPlayers = SteamMatchmaking.GetNumLobbyMembers((CSteamID)lobbyIDs[i].m_SteamID);
+                lobbyListItemScript.maxNumberOfPlayers = SteamMatchmaking.GetLobbyMemberLimit((CSteamID)lobbyIDs[i].m_SteamID);
                 lobbyListItemScript.SetLobbyItemValues();
 
                 lobbyListItem.transform.SetParent(content);

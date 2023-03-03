@@ -10,7 +10,7 @@ public class PlayerManager : NetworkBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject serverSide;
-    public Client clientSide;
+    [SerializeField] private GameObject clientSide;
     public Transform userInfoCanvas;
     public TMP_Text usernameText;
 
@@ -40,6 +40,8 @@ public class PlayerManager : NetworkBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+
+        SceneManager.activeSceneChanged += ChangedScene;
     }
 
     public override void OnStartAuthority()
@@ -51,7 +53,7 @@ public class PlayerManager : NetworkBehaviour
         GameManager.instance.FindLocalPlayerManager();
         GameManager.instance.UpdateLobbyName();
 
-        clientSide.gameObject.SetActive(true);
+        clientSide.SetActive(true);
         serverSide.SetActive(false);
     }
 
@@ -69,20 +71,14 @@ public class PlayerManager : NetworkBehaviour
         Debug.Log(username + " is quiting the game.");
     }
 
-    //Leave Lobby
-    [Command]
-    private void CmdLeaveLobby()
+    private void ChangedScene(Scene current, Scene next)
     {
-        Manager.offlineScene = "";
-
-        SceneManager.LoadScene("Main");
-
-        GameManager.instance.DestroyPlayerListItems();
-
-        SteamMatchmaking.LeaveLobby((CSteamID)LobbyManager.instance.currentLobbyID);
-
-        if (isOwned)
+        if (next.name == "Main" && isOwned)
         {
+            Manager.offlineScene = "";
+
+            LobbyManager.instance.LeaveLobby((CSteamID)LobbyManager.instance.currentLobbyID);
+
             if (isServer)
             {
                 Manager.StopHost();
@@ -93,9 +89,13 @@ public class PlayerManager : NetworkBehaviour
             }
         }
     }
+
     public void LeaveLobby()
     {
-        CmdLeaveLobby();
+        if (isOwned)
+        {
+            SceneManager.LoadScene("Main");
+        }
     }
 
     //Name Update
