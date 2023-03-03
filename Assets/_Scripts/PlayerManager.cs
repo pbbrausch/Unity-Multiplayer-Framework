@@ -70,7 +70,8 @@ public class PlayerManager : NetworkBehaviour
     }
 
     //Leave Lobby
-    public void LeaveLobby()
+    [Command]
+    private void CmdLeaveLobby()
     {
         Manager.offlineScene = "";
 
@@ -82,7 +83,7 @@ public class PlayerManager : NetworkBehaviour
 
         if (isOwned)
         {
-            if (leader)
+            if (isServer)
             {
                 Manager.StopHost();
             }
@@ -91,6 +92,10 @@ public class PlayerManager : NetworkBehaviour
                 Manager.StopClient();
             }
         }
+    }
+    public void LeaveLobby()
+    {
+        CmdLeaveLobby();
     }
 
     //Name Update
