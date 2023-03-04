@@ -34,6 +34,12 @@ public class LobbyListManager : MonoBehaviour
         lobbyList = Callback<LobbyMatchList_t>.Create(OnGetLobbiesList);
     }
 
+    private void OnDisable()
+    {
+        lobbyData.Dispose();
+        lobbyList.Dispose();
+    }
+
     public void GetListOfLobbies()
     {
         if (lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
