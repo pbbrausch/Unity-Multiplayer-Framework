@@ -57,43 +57,38 @@ public class PlayerManager : NetworkBehaviour
     public override void OnStartClient()
     {
         Manager.PlayerManagers.Add(this);
+
         GameManager.instance.UpdateLobbyName();
+
         GameManager.instance.UpdatePlayerListItems();
+    }
+
+    public void LeaveLobby()
+    {
+        if (isOwned)
+        {
+            GameManager.instance.DestroyPlayerListItems();
+
+            SteamMatchmaking.LeaveLobby((CSteamID)LobbyManager.instance.joinedLobbyID);
+
+            if (isServer)
+            {
+                Manager.StopHost();
+            }
+            if (isClient)
+            {
+                Manager.StopClient();
+            }
+        }
     }
 
     public override void OnStopClient()
     {
-        Manager.PlayerManagers.Remove(this);
-        GameManager.instance.UpdatePlayerListItems();
         Debug.Log(username + " is quiting the game.");
-    }
 
-    //Leave Lobby
-    [Command]
-    public void CmdLeaveLobby()
-    {
-        if (isOwned)
-        {
-            LeaveLobby();
-        }
-    }
+        Manager.PlayerManagers.Remove(this);
 
-    private void LeaveLobby()
-    {
-        Manager.offlineScene = "";
-
-        SceneManager.LoadScene("Main");
-
-        LobbyManager.instance.LeaveLobby((CSteamID)LobbyManager.instance.joinedLobbyID);
-
-        if (isServer)
-        {
-            Manager.StopHost();
-        }
-        else
-        {
-            Manager.StopClient();
-        }
+        GameManager.instance.UpdatePlayerListItems();
     }
 
     [Command]

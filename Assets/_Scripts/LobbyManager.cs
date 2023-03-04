@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using Steamworks;
-using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviour
 {
@@ -20,6 +18,7 @@ public class LobbyManager : MonoBehaviour
 
     private CustomNetworkManager manager;
 
+
     private void Awake()
     {
         //Check if initialized
@@ -35,6 +34,13 @@ public class LobbyManager : MonoBehaviour
         joinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnJoinRequested);
         lobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
         lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
+    }
+
+    private void OnDisable()
+    {
+        joinRequested.Dispose();
+        lobbyCreated.Dispose();
+        lobbyEntered.Dispose();
     }
 
     private void OnJoinRequested(GameLobbyJoinRequested_t callback)

@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text lobbyNameText;
     [SerializeField] private Transform content;
 
-    private PlayerManager localPlayerManager;
+    [SerializeField] private PlayerManager localPlayerManager;
 
     private bool PlayerItemsCreated;
     private List<PlayerListItem> playerListItems = new();
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     //QuitLobby
     public void LeaveLobby()
     {
-        localPlayerManager.CmdLeaveLobby();
+        localPlayerManager.LeaveLobby();
     }
 
     //Update Lobby Data
@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
         {
             if (!Manager.PlayerManagers.Any(b => b.connectionId == playerListItem.connectionID))
             {
-                if (playerListItem) { playerListItemsToRemove.Add(playerListItem); }
+                playerListItemsToRemove.Add(playerListItem);
             }
         }
 
@@ -161,4 +161,13 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    public void DestroyPlayerListItems()
+    {
+        foreach (PlayerListItem playerListItem in playerListItems)
+        {
+            Destroy(playerListItem.gameObject);
+        }
+        playerListItems.Clear();
+    }
+
 }
