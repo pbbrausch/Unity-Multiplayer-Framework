@@ -3322,7 +3322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad4d46ad18d74843a88becb14b88267, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentLobbyID: 0
+  joinedLobbyID: 0
 --- !u!114 &1128846270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3344,7 +3344,7 @@ MonoBehaviour:
   onlineScene: Assets/Scenes/Game.unity
   transport: {fileID: 1128846265}
   networkAddress: localhost
-  maxConnections: 20
+  maxConnections: 5
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 4245232891991793230, guid: 59ad60df6b0fbf2478631f1572992b60,
     type: 3}
