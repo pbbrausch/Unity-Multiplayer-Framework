@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 using Steamworks;
+using TMPro;
 
 public class LobbyListManager : MonoBehaviour
 {
@@ -9,6 +9,7 @@ public class LobbyListManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private GameObject LobbyListItemPrefab;
+    [SerializeField] private TMP_InputField inputField;
     [SerializeField] private Transform content;
 
     [HideInInspector] public bool reset;
@@ -37,7 +38,16 @@ public class LobbyListManager : MonoBehaviour
     {
         if (lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
 
-        SteamMatchmaking.AddRequestLobbyListResultCountFilter(100);
+        if (string.IsNullOrEmpty(inputField.text))
+        {
+            SteamMatchmaking.AddRequestLobbyListResultCountFilter(100);
+
+        }
+        else
+        {
+            SteamMatchmaking.AddRequestLobbyListStringFilter("lobby_name", "%" + inputField.text + "%", ELobbyComparison.k_ELobbyComparisonEqual);
+
+        }
         SteamMatchmaking.RequestLobbyList();
     }
 
