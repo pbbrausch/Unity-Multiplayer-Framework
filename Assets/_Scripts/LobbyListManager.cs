@@ -55,7 +55,7 @@ public class LobbyListManager : MonoBehaviour
 
             if (!string.IsNullOrEmpty(inputField.text))
             {
-                if (!SteamMatchmaking.GetLobbyData(lobbyID, "name").Contains(inputField.text))
+                if (!SteamMatchmaking.GetLobbyData(lobbyID, "name").ToLower().Contains(inputField.text.ToLower()))
                 {
                     continue;
                 }

@@ -72,7 +72,10 @@ public class PlayerManager : NetworkBehaviour
     [Command]
     public void CmdLeaveLobby()
     {
-        LeaveLobby();
+        if (isOwned)
+        {
+            LeaveLobby();
+        }
     }
 
     private void LeaveLobby()
