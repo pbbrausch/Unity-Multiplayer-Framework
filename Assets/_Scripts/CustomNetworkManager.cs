@@ -25,7 +25,7 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        if (conn.identity != null) { PlayerManagers.Remove(conn.identity.GetComponent<PlayerManager>()); }
+        if (conn.identity != null) { PlayerManagers.Remove(conn.identity.GetComponent<PlayerManager>()); NetworkServer.RemovePlayerForConnection(conn, true); }
     }
 
     public override void OnStopServer()
