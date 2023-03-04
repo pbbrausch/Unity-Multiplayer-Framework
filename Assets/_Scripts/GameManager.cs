@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour
                     if (playerManager.leader)
                         playerListItemScript.leaderIcon.SetActive(true);
 
-                    if (playerManager.connectionId == GameObject.Find("LocalGamePlayer").GetComponent<PlayerManager>().connectionId || SteamFriends.GetFriendRelationship((CSteamID)playerManager.steamId) == EFriendRelationship.k_EFriendRelationshipFriend)
+                    if (playerManager.isOwned || SteamFriends.GetFriendRelationship((CSteamID)playerManager.steamId) == EFriendRelationship.k_EFriendRelationshipFriend)
                     {
                         playerListItemScript.addFriendButton.SetActive(false);
                         playerListItemScript.leaderIcon.transform.position = playerListItemScript.leaderIconOld.position;

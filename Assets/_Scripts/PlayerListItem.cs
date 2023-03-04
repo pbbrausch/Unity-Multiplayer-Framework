@@ -39,7 +39,7 @@ public class PlayerListItem : MonoBehaviour
     }
 
     //Avatar
-    void GetPlayerAvatar()
+    private void GetPlayerAvatar()
     {
         int imageId = SteamFriends.GetLargeFriendAvatar((CSteamID)steamId);
 
