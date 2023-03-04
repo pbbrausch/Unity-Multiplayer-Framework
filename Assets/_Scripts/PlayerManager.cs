@@ -81,7 +81,7 @@ public class PlayerManager : NetworkBehaviour
 
         SceneManager.LoadScene("Main");
 
-        LobbyManager.instance.LeaveLobby((CSteamID)LobbyManager.instance.currentLobbyID);
+        LobbyManager.instance.LeaveLobby((CSteamID)LobbyManager.instance.joinedLobbyID);
 
         if (isServer)
         {

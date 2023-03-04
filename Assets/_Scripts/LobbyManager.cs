@@ -14,7 +14,7 @@ public class LobbyManager : MonoBehaviour
     protected Callback<LobbyEnter_t> lobbyEntered;
 
     //Current Lobby Data
-    [HideInInspector] public ulong currentLobbyID;
+    [HideInInspector] public ulong joinedLobbyID;
 
     private const string HostAddressKey = "HostAddress";
 
@@ -22,13 +22,14 @@ public class LobbyManager : MonoBehaviour
 
     private void Awake()
     {
-        manager = GetComponent<CustomNetworkManager>();
-
         //Check if initialized
         if (!SteamManager.Initialized) { return; }
 
         //Instance Create
         if (instance == null) { instance = this; }
+
+        //Get custom network manager
+        manager = GetComponent<CustomNetworkManager>();
 
         //Create Callbacks for Lobby
         joinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnJoinRequested);
@@ -45,7 +46,7 @@ public class LobbyManager : MonoBehaviour
     {
         if (callback.m_eResult != EResult.k_EResultOK) { return; }
 
-        Debug.Log("Created lobby");
+        Debug.Log("Lobby created successfully.");
 
         manager.StartHost();
 
@@ -55,13 +56,13 @@ public class LobbyManager : MonoBehaviour
 
     private void OnLobbyEntered(LobbyEnter_t callback)
     {
-        Debug.Log("Entered lobby with id: " + currentLobbyID.ToString());
+        Debug.Log("Entered lobby with id: " + joinedLobbyID.ToString());
 
-        currentLobbyID = callback.m_ulSteamIDLobby;
+        joinedLobbyID = callback.m_ulSteamIDLobby;
 
         if (NetworkServer.active) { return; }
 
-        manager.networkAddress = SteamMatchmaking.GetLobbyData(new CSteamID(currentLobbyID), HostAddressKey);
+        manager.networkAddress = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAddressKey);
 
         manager.StartClient();
 
@@ -82,13 +83,13 @@ public class LobbyManager : MonoBehaviour
         SteamMatchmaking.LeaveLobby(lobbyID);
     }
 
-    public void HostLobby(int type, int maxPlayers)
+    public void HostLobby(int lobbyType, int maxPlayers)
     {
         Debug.Log("Hosting lobby");
 
         manager.maxConnections = maxPlayers;
 
-        switch (type)
+        switch (lobbyType)
         {
             case 0:
                 SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, manager.maxConnections);

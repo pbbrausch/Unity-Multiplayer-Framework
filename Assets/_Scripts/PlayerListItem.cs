@@ -34,10 +34,7 @@ public class PlayerListItem : MonoBehaviour
     {
         int imageId = SteamFriends.GetLargeFriendAvatar((CSteamID)steamId);
 
-        if (imageId == -1)
-        {
-            return;
-        }
+        if (imageId == -1) { return; }
 
         avatar.texture = GetSteamImageAsTexture(imageId);
     }

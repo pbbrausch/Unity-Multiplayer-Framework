@@ -16,7 +16,7 @@ public class CustomNetworkManager : NetworkManager
         PlayerManagerInstance.leader = PlayerManagers.Count == 0;
         PlayerManagerInstance.connectionId = conn.connectionId;
         PlayerManagerInstance.playerIdNumber = PlayerManagers.Count + 1;
-        PlayerManagerInstance.steamId = (ulong)SteamMatchmaking.GetLobbyMemberByIndex((CSteamID)LobbyManager.instance.currentLobbyID, PlayerManagers.Count);
+        PlayerManagerInstance.steamId = (ulong)SteamMatchmaking.GetLobbyMemberByIndex((CSteamID)LobbyManager.instance.joinedLobbyID, PlayerManagers.Count);
 
         NetworkServer.AddPlayerForConnection(conn, PlayerManagerInstance.gameObject);
 
@@ -25,7 +25,7 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        if (conn.identity != null) { PlayerManagers.Remove(conn.identity.GetComponent<PlayerManager>()); }
+        if (conn.identity != null) { PlayerManagers.Remove(conn.identity.GetComponent<PlayerManager>()); NetworkServer.RemovePlayerForConnection(conn, false); }
     }
 
     public override void OnStopServer()

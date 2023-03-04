@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     //Update Lobby Data
     public void UpdateLobbyName()
     {
-        lobbyNameText.text = SteamMatchmaking.GetLobbyData((CSteamID)LobbyManager.instance.currentLobbyID, "name");
+        lobbyNameText.text = SteamMatchmaking.GetLobbyData((CSteamID)LobbyManager.instance.joinedLobbyID, "name");
     }
 
     //Update PlayerListITems
@@ -92,6 +92,7 @@ public class GameManager : MonoBehaviour
 
         PlayerItemsCreated = true;
     }
+
     private void CreateNewListItems()
     {
         foreach (PlayerManager playerManager in Manager.PlayerManagers)
@@ -119,6 +120,26 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    private void UpdateListItems()
+    {
+        foreach (PlayerManager playerManager in Manager.PlayerManagers)
+        {
+            foreach (PlayerListItem playerListItemScript in playerListItems)
+            {
+                if (playerListItemScript.connectionID == playerManager.connectionId)
+                {
+                    //PlayerManager
+                    playerManager.usernameText.text = playerManager.username;
+
+                    //PlayerListItemScript
+                    playerListItemScript.username = playerManager.username;
+                    playerListItemScript.SetPlayerListItemValues();
+                }
+            }
+        }
+    }
+
     private void RemoveListItems()
     {
         List<PlayerListItem> playerListItemsToRemove = new();
@@ -137,24 +158,6 @@ public class GameManager : MonoBehaviour
             {
                 playerListItems.Remove(playerListItemToRemove);
                 Destroy(playerListItemToRemove.gameObject);
-            }
-        }
-    }
-    private void UpdateListItems()
-    {
-        foreach (PlayerManager playerManager in Manager.PlayerManagers)
-        {
-            foreach (PlayerListItem playerListItemScript in playerListItems)
-            {
-                if (playerListItemScript.connectionID == playerManager.connectionId)
-                {
-                    //PlayerManager
-                    playerManager.usernameText.text = playerManager.username;
-
-                    //PlayerListItemScript
-                    playerListItemScript.username = playerManager.username;
-                    playerListItemScript.SetPlayerListItemValues();
-                }
             }
         }
     }
