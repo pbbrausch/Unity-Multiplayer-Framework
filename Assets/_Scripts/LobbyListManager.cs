@@ -37,17 +37,27 @@ public class LobbyListManager : MonoBehaviour
         SceneManager.activeSceneChanged += SceneChanged;
     }
 
+    private void OnEnable()
+    {
+        InvokeRepeating(nameof(GetListOfLobbies), 0, 2);
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke();
+    }
+
     private void SceneChanged(Scene current, Scene next)
     {
         lobbyData.Dispose();
         lobbyList.Dispose();
     }
 
-    public void GetListOfLobbies()
+    private void GetListOfLobbies()
     {
         if (lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
 
-        SteamMatchmaking.AddRequestLobbyListResultCountFilter(200);
+        SteamMatchmaking.AddRequestLobbyListResultCountFilter(100);
 
         SteamMatchmaking.RequestLobbyList();
     }
