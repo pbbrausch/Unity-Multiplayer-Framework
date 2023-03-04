@@ -67,6 +67,8 @@ public class PlayerManager : NetworkBehaviour
     {
         if (isOwned)
         {
+            GameManager.instance.DestroyPlayerListItems();
+
             if (isServer)
             {
                 Manager.StopHost();
@@ -80,8 +82,6 @@ public class PlayerManager : NetworkBehaviour
 
     private void OnDisable()
     {
-        GameManager.instance.DestroyPlayerListItems();
-
         SteamMatchmaking.LeaveLobby((CSteamID)LobbyManager.instance.joinedLobbyID);
     }
 
