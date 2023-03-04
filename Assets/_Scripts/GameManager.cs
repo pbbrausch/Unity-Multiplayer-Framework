@@ -132,9 +132,6 @@ public class GameManager : MonoBehaviour
                     playerManager.usernameText.text = playerManager.username;
 
                     //PlayerListItemScript
-                    if (!playerListItems.Any(b => b.connectionID == playerManager.connectionId) && SteamFriends.GetFriendRelationship((CSteamID)playerListItemScript.steamId) != EFriendRelationship.k_EFriendRelationshipFriend)
-                        playerListItemScript.addFriendButton.SetActive(true);
-
                     playerListItemScript.username = playerManager.username;
                     playerListItemScript.SetPlayerListItemValues();
                 }

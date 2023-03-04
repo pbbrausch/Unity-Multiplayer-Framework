@@ -8,7 +8,6 @@ public class PlayerListItem : MonoBehaviour
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private RawImage avatar;
 
-    public GameObject addFriendButton;
     public GameObject leaderIcon;
 
     [HideInInspector] public bool avatarRecieved;
