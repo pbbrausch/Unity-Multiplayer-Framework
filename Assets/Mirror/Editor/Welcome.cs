@@ -15,7 +15,7 @@ namespace Mirror
             if (!SessionState.GetBool("MIRROR_WELCOME", false))
             {
                 SessionState.SetBool("MIRROR_WELCOME", true);
-                Debug.Log("Mirror | mirror-networking.com | discord.gg/N9QVxbM");
+                //Debug.Log("Mirror | mirror-networking.com | discord.gg/N9QVxbM");
             }
         }
     }
