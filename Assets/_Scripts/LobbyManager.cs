@@ -51,7 +51,7 @@ public class LobbyManager : MonoBehaviour
         manager.StartHost();
 
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAddressKey, SteamUser.GetSteamID().ToString());
-        SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "lobby_name", SteamFriends.GetPersonaName().ToString() + "'s Lobby");
+        SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "name", SteamFriends.GetPersonaName().ToString() + "'s Lobby");
     }
 
     private void OnLobbyEntered(LobbyEnter_t callback)
