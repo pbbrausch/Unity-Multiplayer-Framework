@@ -70,8 +70,11 @@ public class LobbyListManager : MonoBehaviour
                 }
             }
 
-            lobbyIDs.Add(lobbyID);
-            SteamMatchmaking.RequestLobbyData(lobbyID);
+            if (SteamMatchmaking.GetLobbyData(lobbyID, "active") == "true")
+            {
+                lobbyIDs.Add(lobbyID);
+                SteamMatchmaking.RequestLobbyData(lobbyID);
+            }
         }
     }
 

@@ -67,24 +67,19 @@ public class PlayerManager : NetworkBehaviour
     {
         if (isOwned)
         {
+            GameManager.instance.DestroyPlayerListItems();
+
+            SteamMatchmaking.LeaveLobby((CSteamID)LobbyManager.instance.joinedLobbyID);
+
             if (isServer)
             {
+                SteamMatchmaking.SetLobbyData((CSteamID)LobbyManager.instance.joinedLobbyID, "active", "false");
                 Manager.StopHost();
             }
             if (isClient)
             {
                 Manager.StopClient();
             }
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (isOwned)
-        {
-            GameManager.instance.DestroyPlayerListItems();
-
-            SteamMatchmaking.LeaveLobby((CSteamID)LobbyManager.instance.joinedLobbyID);
         }
     }
 
