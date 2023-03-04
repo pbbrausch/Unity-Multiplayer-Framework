@@ -21,7 +21,7 @@ public class PlayerManager : NetworkBehaviour
     [SyncVar] public bool leader;
 
     //Player Info (updated)
-    [SyncVar(hook = nameof(SetPlayerName))] public string username;
+    [SyncVar(hook = nameof(PlayerNameUpdate))] public string username;
 
     private CustomNetworkManager manager;
 
@@ -93,20 +93,19 @@ public class PlayerManager : NetworkBehaviour
         }
     }
 
-    //Name Update
     [Command]
     private void CmdSetPlayerName(string username)
     {
-        SetPlayerName(this.username, username);
+        PlayerNameUpdate(this.username, username);
     }
 
-    private void SetPlayerName(string oldValue, string newValue)
+    public void PlayerNameUpdate(string OldValue, string NewValue)
     {
-        Debug.Log("Setting username name to: " + newValue);
-
-        username = newValue;
-
-        if (isClient)
+        if (isServer) //Host
+        {
+            username = NewValue;
+        }
+        if (isClient) //Client
         {
             GameManager.instance.UpdatePlayerListItems();
         }
