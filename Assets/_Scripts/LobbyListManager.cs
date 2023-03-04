@@ -45,8 +45,7 @@ public class LobbyListManager : MonoBehaviour
         }
         else
         {
-            SteamMatchmaking.AddRequestLobbyListStringFilter("lobby_name", "%" + inputField.text + "%", ELobbyComparison.k_ELobbyComparisonEqual);
-
+            SteamMatchmaking.AddRequestLobbyListStringFilter("name", "%" + inputField.text + "%", ELobbyComparison.k_ELobbyComparisonEqual);
         }
         SteamMatchmaking.RequestLobbyList();
     }
