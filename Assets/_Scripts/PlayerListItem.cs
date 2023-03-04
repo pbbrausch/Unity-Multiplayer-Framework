@@ -5,9 +5,11 @@ using Steamworks;
 
 public class PlayerListItem : MonoBehaviour
 {
-    public GameObject leaderIcon;
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private RawImage avatar;
+
+    public GameObject addFriendButton;
+    public GameObject leaderIcon;
 
     [HideInInspector] public bool avatarRecieved;
     [HideInInspector] public ulong steamId;
@@ -27,6 +29,11 @@ public class PlayerListItem : MonoBehaviour
 
         if (!avatarRecieved)
             GetPlayerAvatar();
+    }
+
+    public void AddFriend()
+    {
+        SteamFriends.ActivateGameOverlayToUser("friendAdd", (CSteamID)steamId);
     }
 
     //Avatar

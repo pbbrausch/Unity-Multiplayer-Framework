@@ -39,7 +39,7 @@ public class LobbyListManager : MonoBehaviour
 
     private void OnEnable()
     {
-        InvokeRepeating(nameof(GetListOfLobbies), 0, 2);
+        InvokeRepeating(nameof(GetListOfLobbies), 0, 1.5f);
     }
 
     private void OnDisable()
@@ -65,8 +65,6 @@ public class LobbyListManager : MonoBehaviour
     private void OnGetLobbiesList(LobbyMatchList_t result)
     {
         if (lobbyListItems.Count > 0) { DestroyOldLobbies(); }
-
-        Debug.Log("Found " + result.m_nLobbiesMatching + " lobbies!");
 
         for (int i=0; i < result.m_nLobbiesMatching; i++)
         {
@@ -95,8 +93,6 @@ public class LobbyListManager : MonoBehaviour
 
     public void DestroyOldLobbies()
     {
-        Debug.Log("Destroyed old lobbies");
-
         foreach (GameObject lobbyItem in lobbyListItems)
         {     
             Destroy(lobbyItem);
@@ -111,8 +107,6 @@ public class LobbyListManager : MonoBehaviour
         {
             if (lobbyIDs[i].m_SteamID == result.m_ulSteamIDLobby)
             {
-                Debug.Log("Player searched for lobbies");
-
                 GameObject lobbyListItem = Instantiate(LobbyListItemPrefab);
                 LobbyListItem lobbyListItemScript = lobbyListItem.GetComponent<LobbyListItem>();
 

@@ -73,11 +73,13 @@ public class GameManager : MonoBehaviour
             GameObject playerListItem = Instantiate(playerListItemPrefab);
             PlayerListItem playerListItemScript = playerListItem.GetComponent<PlayerListItem>();
 
-            //PlayerManager
-            if (playerManager.leader)
-                playerListItemScript.leaderIcon.SetActive(true);
 
             //PlayerListItemScript
+            if (playerManager.leader)
+                playerListItemScript.leaderIcon.SetActive(true);
+            if (playerManager.connectionId != localPlayerManager.connectionId && SteamFriends.GetFriendRelationship((CSteamID)playerManager.steamId) != EFriendRelationship.k_EFriendRelationshipFriend)
+                playerListItemScript.addFriendButton.SetActive(true);
+
             playerListItemScript.username = playerManager.username;
             playerListItemScript.connectionID = playerManager.connectionId;
             playerListItemScript.steamId = playerManager.steamId;
@@ -102,11 +104,12 @@ public class GameManager : MonoBehaviour
                 GameObject playerListItem = Instantiate(playerListItemPrefab);
                 PlayerListItem playerListItemScript = playerListItem.GetComponent<PlayerListItem>();
 
-                //PlayerManager
+                //PlayerListItemScript
                 if (playerManager.leader)
                     playerListItemScript.leaderIcon.SetActive(true);
+                if (playerManager.connectionId != localPlayerManager.connectionId && SteamFriends.GetFriendRelationship((CSteamID)playerManager.steamId) != EFriendRelationship.k_EFriendRelationshipFriend)
+                    playerListItemScript.addFriendButton.SetActive(true);
 
-                //PlayerListItemScript
                 playerListItemScript.username = playerManager.username;
                 playerListItemScript.connectionID = playerManager.connectionId;
                 playerListItemScript.steamId = playerManager.steamId;
@@ -161,6 +164,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     public void DestroyPlayerListItems()
     {
         foreach (PlayerListItem playerListItem in playerListItems)
@@ -169,5 +173,4 @@ public class GameManager : MonoBehaviour
         }
         playerListItems.Clear();
     }
-
 }
