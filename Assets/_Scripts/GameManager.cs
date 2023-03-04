@@ -105,8 +105,6 @@ public class GameManager : MonoBehaviour
                 //PlayerListItemScript
                 if (playerManager.leader)
                     playerListItemScript.leaderIcon.SetActive(true);
-                if (playerManager.connectionId != localPlayerManager.connectionId && SteamFriends.GetFriendRelationship((CSteamID)playerManager.steamId) != EFriendRelationship.k_EFriendRelationshipFriend)
-                    playerListItemScript.addFriendButton.SetActive(true);
 
                 playerListItemScript.username = playerManager.username;
                 playerListItemScript.connectionID = playerManager.connectionId;
