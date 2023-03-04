@@ -132,9 +132,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 23873852}
-  - component: {fileID: 23873853}
   m_Layer: 5
-  m_Name: Lobby
+  m_Name: Scoreboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,22 +163,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &23873853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 23873851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8da61674891c92a4581a49b3e56fa73b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LobbyListItemPrefab: {fileID: 4266161668376823600, guid: 63d008cc48d6db74f97791bd90488f3c,
-    type: 3}
-  content: {fileID: 1575080804}
-  reset: 0
 --- !u!1 &109570486
 GameObject:
   m_ObjectHideFlags: 0
@@ -1441,7 +1424,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: 247
     m_Right: 0
-    m_Top: -22
+    m_Top: -23
     m_Bottom: 4
   m_ChildAlignment: 0
   m_Spacing: -24

@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text lobbyNameText;
     [SerializeField] private Transform content;
 
-    [SerializeField] private PlayerManager localPlayerManager;
+    private PlayerManager localPlayerManager;
 
     private bool PlayerItemsCreated;
     private List<PlayerListItem> playerListItems = new();
