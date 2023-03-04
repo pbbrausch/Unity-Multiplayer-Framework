@@ -35,7 +35,7 @@ public class PlayerListItem : MonoBehaviour
 
     public void AddFriend()
     {
-        SteamFriends.ActivateGameOverlayToUser("friendAdd", (CSteamID)steamId);
+        SteamFriends.ActivateGameOverlayToUser("steamid", (CSteamID)steamId);
     }
 
     //Avatar
