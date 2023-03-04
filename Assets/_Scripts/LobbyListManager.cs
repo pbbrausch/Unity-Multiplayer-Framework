@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Steamworks;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LobbyListManager : MonoBehaviour
 {
@@ -32,9 +33,11 @@ public class LobbyListManager : MonoBehaviour
         //Create Callbacks For Lobby
         lobbyData = Callback<LobbyDataUpdate_t>.Create(OnGetLobbyData);
         lobbyList = Callback<LobbyMatchList_t>.Create(OnGetLobbiesList);
+
+        SceneManager.activeSceneChanged += SceneChanged;
     }
 
-    private void OnDisable()
+    private void SceneChanged(Scene current, Scene next)
     {
         lobbyData.Dispose();
         lobbyList.Dispose();
