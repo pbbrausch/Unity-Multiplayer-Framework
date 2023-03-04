@@ -95,18 +95,17 @@ public class PlayerManager : NetworkBehaviour
 
     //Name Update
     [Command]
-    private void CmdSetPlayerName(string name)
+    private void CmdSetPlayerName(string username)
     {
-        Debug.Log("Setting username name to: " + name);
-        SetPlayerName(username, name);
+        SetPlayerName(this.username, username);
     }
 
     private void SetPlayerName(string oldValue, string newValue)
     {
-        if (isServer)
-        {
-            username = newValue;
-        }
+        Debug.Log("Setting username name to: " + newValue);
+
+        username = newValue;
+
         if (isClient)
         {
             GameManager.instance.UpdatePlayerListItems();
