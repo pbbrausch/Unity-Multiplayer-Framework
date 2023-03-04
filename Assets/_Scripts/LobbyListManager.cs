@@ -38,15 +38,8 @@ public class LobbyListManager : MonoBehaviour
     {
         if (lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
 
-        if (string.IsNullOrEmpty(inputField.text))
-        {
-            SteamMatchmaking.AddRequestLobbyListResultCountFilter(100);
+        SteamMatchmaking.AddRequestLobbyListResultCountFilter(200);
 
-        }
-        else
-        {
-            SteamMatchmaking.AddRequestLobbyListStringFilter("name",  inputField.text, ELobbyComparison.k_ELobbyComparisonEqual);
-        }
         SteamMatchmaking.RequestLobbyList();
     }
 
@@ -59,6 +52,15 @@ public class LobbyListManager : MonoBehaviour
         for (int i=0; i < result.m_nLobbiesMatching; i++)
         {
             CSteamID lobbyID = SteamMatchmaking.GetLobbyByIndex(i);
+
+            if (!string.IsNullOrEmpty(inputField.text))
+            {
+                if (!SteamMatchmaking.GetLobbyData(lobbyID, "name").Contains(inputField.text))
+                {
+                    continue;
+                }
+            }
+
             lobbyIDs.Add(lobbyID);
             SteamMatchmaking.RequestLobbyData(lobbyID);
         }
