@@ -52,8 +52,6 @@ public class LobbyManager : MonoBehaviour
     {
         if (callback.m_eResult != EResult.k_EResultOK) { return; }
 
-        Debug.Log("Lobby created successfully.");
-
         manager.StartHost();
 
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAddressKey, SteamUser.GetSteamID().ToString());
@@ -63,8 +61,6 @@ public class LobbyManager : MonoBehaviour
 
     private void OnLobbyEntered(LobbyEnter_t callback)
     {
-        Debug.Log("Entered lobby with id: " + joinedLobbyID.ToString());
-
         joinedLobbyID = callback.m_ulSteamIDLobby;
 
         if (NetworkServer.active) { return; }
