@@ -8,7 +8,10 @@ public class PlayerListItem : MonoBehaviour
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private RawImage avatar;
 
+    public Transform leaderIconNew;
+    public Transform leaderIconOld;
     public GameObject leaderIcon;
+    public GameObject addFriendButton;
 
     [HideInInspector] public bool avatarRecieved;
     [HideInInspector] public ulong steamId;

@@ -132,6 +132,20 @@ public class GameManager : MonoBehaviour
                     playerManager.usernameText.text = playerManager.username;
 
                     //PlayerListItemScript
+                    if (playerManager.leader)
+                        playerListItemScript.leaderIcon.SetActive(true);
+
+                    if (playerManager.connectionId == GameObject.Find("LocalGamePlayer").GetComponent<PlayerManager>().connectionId || SteamFriends.GetFriendRelationship((CSteamID)playerManager.steamId) == EFriendRelationship.k_EFriendRelationshipFriend)
+                    {
+                        playerListItemScript.addFriendButton.SetActive(false);
+                        playerListItemScript.leaderIcon.transform.position = playerListItemScript.leaderIconOld.position;
+                    }
+                    else
+                    {
+                        playerListItemScript.addFriendButton.SetActive(true);
+                        playerListItemScript.leaderIcon.transform.position = playerListItemScript.leaderIconNew.position;
+                    }
+
                     playerListItemScript.username = playerManager.username;
                     playerListItemScript.SetPlayerListItemValues();
                 }
