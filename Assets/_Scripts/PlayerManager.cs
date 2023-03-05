@@ -56,11 +56,6 @@ public class PlayerManager : NetworkBehaviour
 
     public override void OnStartClient()
     {
-        if (isOwned)
-        {
-            gameObject.name = "LocalGamePlayer";
-        }
-
         Manager.PlayerManagers.Add(this);
 
         GameManager.instance.UpdateLobbyName();

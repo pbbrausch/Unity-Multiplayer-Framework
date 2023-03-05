@@ -165,13 +165,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (playerListItemsToRemove.Count > 0)
+        foreach (PlayerListItem playerListItemToRemove in playerListItemsToRemove)
         {
-            foreach (PlayerListItem playerListItemToRemove in playerListItemsToRemove)
-            {
-                playerListItems.Remove(playerListItemToRemove);
-                Destroy(playerListItemToRemove.gameObject);
-            }
+            playerListItems.Remove(playerListItemToRemove);
+            Destroy(playerListItemToRemove.gameObject);
         }
     }
 

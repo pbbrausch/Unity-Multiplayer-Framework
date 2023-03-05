@@ -13,8 +13,6 @@ public class LobbyListManager : MonoBehaviour
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private Transform content;
 
-    [HideInInspector] public bool reset;
-
     //Callbacks
     protected Callback<LobbyDataUpdate_t> lobbyData;
     protected Callback<LobbyMatchList_t> lobbyList;
