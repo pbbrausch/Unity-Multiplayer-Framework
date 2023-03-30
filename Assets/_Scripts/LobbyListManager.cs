@@ -55,7 +55,7 @@ public class LobbyListManager : MonoBehaviour
 
     private void OnEnable()
     {
-        InvokeRepeating(nameof(GetListOfLobbies), 0, 1.5f);
+        InvokeRepeating(nameof(GetListOfLobbies), 0, 1f);
     }
 
     private void OnDisable()
