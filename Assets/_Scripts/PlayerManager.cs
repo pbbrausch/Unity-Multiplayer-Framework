@@ -1,18 +1,19 @@
-
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using Steamworks;
 using Mirror;
-using UnityEngine.SceneManagement;
 using TMPro;
-
 
 public class PlayerManager : NetworkBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject serverSide;
     [SerializeField] private GameObject clientSide;
+    [SerializeField] private Rigidbody rb;
     public Transform userInfoCanvas;
     public TMP_Text usernameText;
+
+    private Transform[] spawns;
 
     //Player Info (static)
     [SyncVar] public ulong steamId;
@@ -22,6 +23,7 @@ public class PlayerManager : NetworkBehaviour
 
     //Player Info (updated)
     [SyncVar(hook = nameof(PlayerNameUpdate))] public string username;
+    [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool ready;
 
     private CustomNetworkManager manager;
 
@@ -40,6 +42,27 @@ public class PlayerManager : NetworkBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+
+        SceneManager.activeSceneChanged += SceneChanged;
+    }
+
+    private void SceneChanged(Scene current, Scene next)
+    {
+        if (next.isLoaded)
+        {
+            rb.isKinematic = next.name switch
+            {
+                ("Lobby") => true,
+
+                //any game scenes
+                _ => false,
+            };
+        }
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.activeSceneChanged -= SceneChanged;
     }
 
     public override void OnStartAuthority()
@@ -96,21 +119,61 @@ public class PlayerManager : NetworkBehaviour
         GameManager.instance.UpdatePlayerListItems();
     }
 
+    //Name
     [Command]
     private void CmdSetPlayerName(string username)
     {
         PlayerNameUpdate(this.username, username);
     }
-
-    public void PlayerNameUpdate(string OldValue, string NewValue)
+    public void PlayerNameUpdate(string oldValue, string newValue)
     {
         if (isServer) //Host
         {
-            username = NewValue;
+            username = newValue;
         }
         if (isClient) //Client
         {
             GameManager.instance.UpdatePlayerListItems();
         }
     }
+
+    //Ready
+    [Command]
+    private void CmdSetPlayerReady(bool ready)
+    {
+        PlayerReadyUpdate(this.ready, ready);
+    }
+    public void PlayerReadyUpdate(bool oldValue, bool newValue)
+    {
+        if (isServer)
+        {
+            ready = newValue;
+        }
+        if (isClient)
+        {
+            GameManager.instance.UpdatePlayerListItems();
+        }
+    }
+    public void ChangeReady()
+    {
+        if (isOwned)
+        {
+            CmdSetPlayerReady(!ready);
+        }
+    }
+
+    //Start
+    [Command]
+    private void CmdChangeScene(string sceneName)
+    {
+        manager.ChangeScene(sceneName);
+    }
+    public void ChangeScene(string sceneName)
+    {
+        if (isOwned)
+        {
+            CmdChangeScene(sceneName);
+        }
+    }
+
 }

@@ -1,6 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 using Steamworks;
+using Mirror;
+using UnityEngine.UI;
+using TMPro;
+using System.Linq;
 
 public class LobbyManager : MonoBehaviour
 {
@@ -16,8 +20,23 @@ public class LobbyManager : MonoBehaviour
 
     private const string HostAddressKey = "HostAddress";
 
+    private int regionIndex;
+
     private CustomNetworkManager manager;
 
+    //Regions
+    private List<string> regions = new List<string>()
+    {
+        "World",
+        "US-East",
+        "US-West",
+        "SouthAmerica",
+        "Europe",
+        "Asia",
+        "Australia",
+        "MiddleEast",
+        "Africa"
+    };
 
     private void Awake()
     {
@@ -56,6 +75,7 @@ public class LobbyManager : MonoBehaviour
 
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAddressKey, SteamUser.GetSteamID().ToString());
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "name", SteamFriends.GetPersonaName().ToString() + "'s Lobby");
+        SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "region", regions[regionIndex]);
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "active", "true");
     }
 
@@ -86,11 +106,13 @@ public class LobbyManager : MonoBehaviour
         SteamMatchmaking.LeaveLobby(lobbyID);
     }
 
-    public void HostLobby(int lobbyType, int maxPlayers)
+    public void HostLobby(int lobbyType, int maxPlayers, int regionType)
     {
         Debug.Log("Hosting lobby");
 
         manager.maxConnections = maxPlayers;
+
+        regionIndex = regionType;
 
         switch (lobbyType)
         {

@@ -32,4 +32,9 @@ public class CustomNetworkManager : NetworkManager
     {
         PlayerManagers.Clear();
     }
+
+    public void ChangeScene(string sceneName)
+    {
+        ServerChangeScene(sceneName);
+    }
 }

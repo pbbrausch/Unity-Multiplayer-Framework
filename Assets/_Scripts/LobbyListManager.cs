@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Steamworks;
 using TMPro;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class LobbyListManager : MonoBehaviour
@@ -9,9 +10,26 @@ public class LobbyListManager : MonoBehaviour
     public static LobbyListManager instance;
 
     [Header("References")]
-    [SerializeField] private GameObject LobbyListItemPrefab;
-    [SerializeField] private TMP_InputField inputField;
+    [SerializeField] private GameObject lobbyListItemPrefab;
+    [SerializeField] private TMP_InputField nameFilterInputField;
+    [SerializeField] private TMP_Dropdown regionDropDown;
+    [SerializeField] private Slider slotsAvaliableSlider;
+    [SerializeField] private TMP_Text slotsAvaliableText;
     [SerializeField] private Transform content;
+
+    //Regions
+    private List<string> regions = new List<string>()
+    {
+        "World",
+        "US-East",
+        "US-West",
+        "SouthAmerica",
+        "Europe",
+        "Asia",
+        "Australia",
+        "MiddleEast",
+        "Africa"
+    };
 
     //Callbacks
     protected Callback<LobbyDataUpdate_t> lobbyData;
@@ -47,16 +65,27 @@ public class LobbyListManager : MonoBehaviour
 
     private void SceneChanged(Scene current, Scene next)
     {
+        SceneManager.activeSceneChanged -= SceneChanged;
+
         lobbyData.Dispose();
         lobbyList.Dispose();
+    }
+
+    public void UpdateText()
+    {
+        slotsAvaliableText.text = "Slots Avaliable: " + (int)slotsAvaliableSlider.value;
     }
 
     private void GetListOfLobbies()
     {
         if (lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
 
+        //Filters
+        SteamMatchmaking.AddRequestLobbyListStringFilter("region", regions[regionDropDown.value], ELobbyComparison.k_ELobbyComparisonEqual);
+        SteamMatchmaking.AddRequestLobbyListFilterSlotsAvailable((int)slotsAvaliableSlider.value);
         SteamMatchmaking.AddRequestLobbyListResultCountFilter(100);
 
+        //Request List
         SteamMatchmaking.RequestLobbyList();
     }
 
@@ -68,9 +97,9 @@ public class LobbyListManager : MonoBehaviour
         {
             CSteamID lobbyID = SteamMatchmaking.GetLobbyByIndex(i);
 
-            if (!string.IsNullOrEmpty(inputField.text))
+            if (!string.IsNullOrEmpty(nameFilterInputField.text))
             {
-                if (!SteamMatchmaking.GetLobbyData(lobbyID, "name").ToLower().Contains(inputField.text.ToLower()))
+                if (!SteamMatchmaking.GetLobbyData(lobbyID, "name").ToLower().Contains(nameFilterInputField.text.ToLower()))
                 {
                     continue;
                 }
@@ -81,6 +110,9 @@ public class LobbyListManager : MonoBehaviour
                 lobbyIDs.Add(lobbyID);
                 SteamMatchmaking.RequestLobbyData(lobbyID);
             }
+
+            lobbyIDs.Add(lobbyID);
+            SteamMatchmaking.RequestLobbyData(lobbyID);
         }
     }
 
@@ -105,7 +137,7 @@ public class LobbyListManager : MonoBehaviour
         {
             if (lobbyIDs[i].m_SteamID == result.m_ulSteamIDLobby)
             {
-                GameObject lobbyListItem = Instantiate(LobbyListItemPrefab);
+                GameObject lobbyListItem = Instantiate(lobbyListItemPrefab);
                 LobbyListItem lobbyListItemScript = lobbyListItem.GetComponent<LobbyListItem>();
 
                 lobbyListItemScript.lobbyId = (CSteamID)lobbyIDs[i].m_SteamID;

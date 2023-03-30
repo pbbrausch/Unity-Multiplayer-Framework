@@ -8,15 +8,21 @@ public class PlayerListItem : MonoBehaviour
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private RawImage avatar;
 
-    public Transform leaderIconNew;
-    public Transform leaderIconOld;
+    [Header("Leader Icons")]
+    public Transform[] leaderIconsPos;
     public GameObject leaderIcon;
+
+    [Header("Ready Text")]
+    public Transform[] readyTextsPos;
+    public TMP_Text readyText;
+
     public GameObject addFriendButton;
 
     [HideInInspector] public bool avatarRecieved;
     [HideInInspector] public ulong steamId;
     [HideInInspector] public int connectionID;
     [HideInInspector] public string username;
+    [HideInInspector] public bool ready;
 
     protected Callback<AvatarImageLoaded_t> avatarImageLoaded;
 
@@ -28,6 +34,17 @@ public class PlayerListItem : MonoBehaviour
     public void SetPlayerListItemValues()
     {
         nameText.text = username;
+
+        if (ready)
+        {
+            readyText.text = "Ready";
+            readyText.color = Color.green;
+        }
+        else
+        {
+            readyText.text = "Unready";
+            readyText.color = Color.red;
+        }
 
         if (!avatarRecieved)
             GetPlayerAvatar();

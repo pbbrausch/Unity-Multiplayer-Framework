@@ -157,6 +157,7 @@ MonoBehaviour:
   syncInterval: 0.1
   serverSide: {fileID: 3483489299063875561}
   clientSide: {fileID: 6575335503807255756}
+  rb: {fileID: 8090668770519880133}
   userInfoCanvas: {fileID: 6435179858606456498}
   usernameText: {fileID: 1349336296381227535}
   steamId: 0
@@ -164,6 +165,7 @@ MonoBehaviour:
   connectionId: 0
   leader: 0
   username: 
+  ready: 0
 --- !u!136 &8940518441952987896
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -302,8 +304,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.71099997, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8901794120141164247}
+  m_Children: []
   m_Father: {fileID: 7801834171065153847}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -417,13 +418,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4243550470498669976}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.71099997, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5390862083641737132}
-  m_RootOrder: 0
+  m_Father: {fileID: 7801834171065153847}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &3469896447396851942
 Camera:
@@ -599,7 +600,7 @@ MonoBehaviour:
   m_fontSizeBase: 81.4
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 12
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -653,7 +654,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7801834171065153847
 Transform:
   m_ObjectHideFlags: 0
@@ -667,6 +668,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5390862083641737132}
+  - {fileID: 8901794120141164247}
   m_Father: {fileID: 2991004049896569901}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
