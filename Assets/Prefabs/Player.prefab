@@ -649,12 +649,12 @@ GameObject:
   - component: {fileID: 7801834171065153847}
   - component: {fileID: 1519042905595248955}
   m_Layer: 0
-  m_Name: Client
+  m_Name: Client (Disable)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7801834171065153847
 Transform:
   m_ObjectHideFlags: 0

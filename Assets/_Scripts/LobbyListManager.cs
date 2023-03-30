@@ -110,9 +110,6 @@ public class LobbyListManager : MonoBehaviour
                 lobbyIDs.Add(lobbyID);
                 SteamMatchmaking.RequestLobbyData(lobbyID);
             }
-
-            lobbyIDs.Add(lobbyID);
-            SteamMatchmaking.RequestLobbyData(lobbyID);
         }
     }
 

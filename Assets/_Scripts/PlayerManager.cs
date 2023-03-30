@@ -7,7 +7,6 @@ using TMPro;
 public class PlayerManager : NetworkBehaviour
 {
     [Header("References")]
-    [SerializeField] private GameObject serverSide;
     [SerializeField] private GameObject clientSide;
     [SerializeField] private Rigidbody rb;
     public Transform userInfoCanvas;
@@ -74,7 +73,6 @@ public class PlayerManager : NetworkBehaviour
         GameManager.instance.FindLocalPlayerManager();
 
         clientSide.SetActive(true);
-        serverSide.SetActive(false);
     }
 
     public override void OnStartClient()
