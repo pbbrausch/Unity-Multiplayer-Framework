@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     private PlayerManager localPlayerManager;
 
-    private Transform[] spawns;
+    public Transform[] spawns;
 
     private bool PlayerItemsCreated;
     private List<PlayerListItem> playerListItems = new();
