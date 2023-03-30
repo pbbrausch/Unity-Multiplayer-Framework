@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
                     spawns = GameObject.FindGameObjectWithTag("Spawns").GetComponent<Spawns>().spawns;
                     foreach (PlayerManager playerManager in Manager.PlayerManagers)
                     {
+                        Debug.Log("Set player " + playerManager.playerIdNumber + "'s location");
                         playerManager.transform.SetPositionAndRotation(spawns[playerManager.playerIdNumber - 1].position, spawns[playerManager.playerIdNumber - 1].rotation);
                     }
                     foreach (PlayerListItem playerListItemScript in playerListItems)
