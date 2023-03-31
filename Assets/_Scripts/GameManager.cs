@@ -90,7 +90,16 @@ public class GameManager : MonoBehaviour
                 endGameButton.gameObject.SetActive(false);
                 spawns = GameObject.FindGameObjectWithTag("Spawns").GetComponent<Spawns>().spawns;
 
-                UpdateListItems();
+                foreach (PlayerManager playerManager in Manager.PlayerManagers)
+                {
+                    playerManager.rb.isKinematic = true;
+                    playerManager.gameObject.transform.SetPositionAndRotation(spawns[playerManager.playerIdNumber - 1].position, spawns[playerManager.playerIdNumber - 1].rotation);
+                }
+
+                foreach (PlayerListItem playerListItemScript in playerListItems)
+                {
+                    playerListItemScript.readyText.gameObject.SetActive(true);
+                }
 
                 break;
 
@@ -102,15 +111,15 @@ public class GameManager : MonoBehaviour
                 readyButton.gameObject.SetActive(false);
                 endGameButton.gameObject.SetActive(true);
 
-                foreach (PlayerManager playerManager in Manager.PlayerManagers)
+                foreach (PlayerListItem playerListItemScript in playerListItems)
                 {
-                    playerManager.rb.isKinematic = false;
+                    playerListItemScript.readyText.gameObject.SetActive(false);
                 }
-
-                UpdateListItems();
 
                 break;
         }
+
+        UpdateListItems();
     }
 
     public void FindLocalPlayerManager()
@@ -151,8 +160,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("Changing Scene");
 
         localPlayerManager.ChangeScene(sceneName);
-
-        UpdateListItems();
     }
 
     //Update Lobby Data
@@ -329,23 +336,14 @@ public class GameManager : MonoBehaviour
                     playerListItemScript.username = playerManager.username;
                     playerListItemScript.SetPlayerListItemValues();
 
-                    if (SceneManager.GetActiveScene().name == "Main" && SceneManager.GetActiveScene().name == "Lobby")
+                    if (SceneManager.GetActiveScene().name == "Lobby")
                     {
-                        playerListItemScript.readyText.gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        playerListItemScript.readyText.gameObject.SetActive(false);
+                        playerManager.rb.isKinematic = true;
+                        playerManager.gameObject.transform.SetPositionAndRotation(spawns[playerManager.playerIdNumber - 1].position, spawns[playerManager.playerIdNumber - 1].rotation);
                     }
 
                     if (playerManager == localPlayerManager)
                     {
-                        if (SceneManager.GetActiveScene().name == "Lobby")
-                        {
-                            playerManager.rb.isKinematic = true;
-                            playerManager.gameObject.transform.SetPositionAndRotation(spawns[playerManager.playerIdNumber - 1].position, spawns[playerManager.playerIdNumber - 1].rotation);
-                        }
-
                         if (playerManager.leader)
                         {
                             startGameButton.interactable = AllReady();
