@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 
     private PlayerManager localPlayerManager;
 
-    public Transform[] spawns;
+    private Transform[] spawns;
 
     private bool PlayerItemsCreated;
     private List<PlayerListItem> playerListItems = new();
@@ -90,6 +90,13 @@ public class GameManager : MonoBehaviour
                 endGameButton.gameObject.SetActive(false);
                 spawns = GameObject.FindGameObjectWithTag("Spawns").GetComponent<Spawns>().spawns;
 
+                int memberLimit = SteamMatchmaking.GetLobbyMemberLimit((CSteamID)LobbyManager.instance.joinedLobbyID);
+
+                for (int i = memberLimit; i < 10; i++)
+                {
+                    spawns[i].parent.gameObject.SetActive(false);
+                }
+
                 foreach (PlayerManager playerManager in Manager.PlayerManagers)
                 {
                     playerManager.ready = false;
@@ -111,6 +118,11 @@ public class GameManager : MonoBehaviour
                 startGameButton.gameObject.SetActive(false);
                 readyButton.gameObject.SetActive(false);
                 endGameButton.gameObject.SetActive(true);
+
+                foreach (PlayerManager playerManager in Manager.PlayerManagers)
+                {
+                    playerManager.rb.isKinematic = false;
+                }
 
                 foreach (PlayerListItem playerListItemScript in playerListItems)
                 {
@@ -159,6 +171,15 @@ public class GameManager : MonoBehaviour
     public void ChangeScene(string sceneName)
     {
         Debug.Log("Changing Scene");
+
+        if (sceneName == "Lobby")
+        {
+            SteamMatchmaking.SetLobbyData((CSteamID)LobbyManager.instance.joinedLobbyID, "status", "In-Lobby");
+        }
+        else
+        {
+            SteamMatchmaking.SetLobbyData((CSteamID)LobbyManager.instance.joinedLobbyID, "status", "In-Game");
+        }
 
         localPlayerManager.ChangeScene(sceneName);
     }
@@ -301,7 +322,7 @@ public class GameManager : MonoBehaviour
                     //PlayerManager
                     playerManager.usernameText.text = playerManager.username;
 
-                    //PlayerListItemScript                        
+                    //PlayerListItemScript Icons
                     if (playerManager.isOwned || SteamFriends.GetFriendRelationship((CSteamID)playerManager.steamId) == EFriendRelationship.k_EFriendRelationshipFriend)
                     {
                         playerListItemScript.addFriendButton.SetActive(false);
