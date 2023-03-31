@@ -8,9 +8,9 @@ public class PlayerManager : NetworkBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject clientSide;
-    [SerializeField] private Rigidbody rb;
     public Transform userInfoCanvas;
     public TMP_Text usernameText;
+    public Rigidbody rb;
 
     private Transform[] spawns;
 
@@ -41,27 +41,6 @@ public class PlayerManager : NetworkBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-
-        SceneManager.activeSceneChanged += SceneChanged;
-    }
-
-    private void SceneChanged(Scene current, Scene next)
-    {
-        if (next.isLoaded)
-        {
-            rb.isKinematic = next.name switch
-            {
-                ("Lobby") => true,
-
-                //any game scenes
-                _ => false,
-            };
-        }
-    }
-
-    private void OnDestroy()
-    {
-        SceneManager.activeSceneChanged -= SceneChanged;
     }
 
     public override void OnStartAuthority()
@@ -137,9 +116,9 @@ public class PlayerManager : NetworkBehaviour
 
     //Ready
     [Command]
-    private void CmdSetPlayerReady(bool ready)
+    private void CmdSetPlayerReady()
     {
-        PlayerReadyUpdate(this.ready, ready);
+        PlayerReadyUpdate(ready, !ready);
     }
     public void PlayerReadyUpdate(bool oldValue, bool newValue)
     {
@@ -156,7 +135,7 @@ public class PlayerManager : NetworkBehaviour
     {
         if (isOwned)
         {
-            CmdSetPlayerReady(!ready);
+            CmdSetPlayerReady();
         }
     }
 

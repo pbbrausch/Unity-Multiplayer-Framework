@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using Steamworks;
 using Mirror;
@@ -45,8 +46,8 @@ public class GameManager : MonoBehaviour
     {
         if (instance == null)
         {
-            instance = this;
             SceneManager.activeSceneChanged += SceneChanged;
+            instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -57,44 +58,65 @@ public class GameManager : MonoBehaviour
 
     private void SceneChanged(Scene current, Scene next)
     {
-        if (next.isLoaded)
+        StartCoroutine(WaitTillLoaded(next));
+    }
+
+    private IEnumerator WaitTillLoaded(Scene next)
+    {
+        while (!next.isLoaded)
         {
-            switch (next.name)
-            {
-                case ("Main"):
-                    SceneManager.activeSceneChanged -= SceneChanged;
-                    instance = null;
-                    Destroy(gameObject);
-                    break;
+            yield return null;
+        }
 
-                case ("Lobby"):
-                    //Also make sure to reset any other things in player managers
-                    spawns = GameObject.FindGameObjectWithTag("Spawns").GetComponent<Spawns>().spawns;
-                    foreach (PlayerManager playerManager in Manager.PlayerManagers)
-                    {
-                        Debug.Log("Set player " + playerManager.playerIdNumber + "'s location");
-                        playerManager.transform.SetPositionAndRotation(spawns[playerManager.playerIdNumber - 1].position, spawns[playerManager.playerIdNumber - 1].rotation);
-                    }
-                    foreach (PlayerListItem playerListItemScript in playerListItems)
-                    {
-                        playerListItemScript.readyText.gameObject.SetActive(true);
-                    }
-                    startGameButton.gameObject.SetActive(true);
-                    readyButton.gameObject.SetActive(true);
-                    endGameButton.gameObject.SetActive(false);
-                    break;
+        switch (next.name)
+        {
+            case ("Main"):
 
-                //any game scenes
-                default:
-                    foreach (PlayerListItem playerListItemScript in playerListItems)
-                    {
-                        playerListItemScript.readyText.gameObject.SetActive(false);
-                    }
-                    startGameButton.gameObject.SetActive(false);
-                    readyButton.gameObject.SetActive(false);
-                    endGameButton.gameObject.SetActive(true);
-                    break;
-            }
+                Debug.Log("Returning to Menu");
+
+                SceneManager.activeSceneChanged -= SceneChanged;
+
+                instance = null;
+
+                Destroy(gameObject);
+
+                break;
+
+            case ("Lobby"):
+                Debug.Log("Going to Lobby");
+
+                startGameButton.gameObject.SetActive(true);
+                readyButton.gameObject.SetActive(true);
+                endGameButton.gameObject.SetActive(false);
+
+                foreach (PlayerListItem playerListItemScript in playerListItems)
+                {
+                    playerListItemScript.readyText.gameObject.SetActive(true);
+                }
+
+                spawns = GameObject.FindGameObjectWithTag("Spawns").GetComponent<Spawns>().spawns;
+
+                break;
+
+            //any game scenes
+            default:
+                Debug.Log("Going to Game Scene");
+
+                startGameButton.gameObject.SetActive(false);
+                readyButton.gameObject.SetActive(false);
+                endGameButton.gameObject.SetActive(true);
+
+                foreach (PlayerListItem playerListItemScript in playerListItems)
+                {
+                    playerListItemScript.readyText.gameObject.SetActive(false);
+                }
+
+                foreach (PlayerManager playerManager in Manager.PlayerManagers)
+                {
+                    playerManager.rb.isKinematic = false;
+                }
+
+                break;
         }
     }
 
@@ -112,13 +134,26 @@ public class GameManager : MonoBehaviour
     //Change Ready
     public void ChangeReady()
     {
-        Debug.Log("Change Ready");
+        Debug.Log("Changing Ready");
 
         localPlayerManager.ChangeReady();
     }
 
+    private void UpdateButton()
+    {
+        if (localPlayerManager.ready)
+        {
+
+            readyText.text = "Unready";
+        }
+        else
+        {
+            readyText.text = "Ready";
+        }
+    }
+
     //Start Game
-    public void ChangScene(string sceneName)
+    public void ChangeScene(string sceneName)
     {
         Debug.Log("Changing Scene");
 
@@ -263,6 +298,12 @@ public class GameManager : MonoBehaviour
                     //PlayerManager
                     playerManager.usernameText.text = playerManager.username;
 
+                    if (SceneManager.GetActiveScene().name == "Lobby")
+                    {
+                        playerManager.gameObject.transform.SetPositionAndRotation(spawns[playerManager.playerIdNumber - 1].position, spawns[playerManager.playerIdNumber - 1].rotation);
+                        playerManager.rb.isKinematic = true;
+                    }
+
                     //PlayerListItemScript                        
                     if (playerManager.isOwned || SteamFriends.GetFriendRelationship((CSteamID)playerManager.steamId) == EFriendRelationship.k_EFriendRelationshipFriend)
                     {
@@ -295,16 +336,6 @@ public class GameManager : MonoBehaviour
                         }
                     }
 
-                    if (playerManager.ready)
-                    {
-
-                        readyText.text = "Unready";
-                    }
-                    else
-                    {
-                        readyText.text = "Ready";
-                    }
-
                     playerListItemScript.ready = playerManager.ready;
                     playerListItemScript.username = playerManager.username;
                     playerListItemScript.SetPlayerListItemValues();
@@ -318,6 +349,11 @@ public class GameManager : MonoBehaviour
                     {
                         startGameButton.interactable = false;
                         endGameButton.interactable = false;
+                    }
+
+                    if (playerManager == localPlayerManager)
+                    {
+                        UpdateButton();
                     }
                 }
             }
