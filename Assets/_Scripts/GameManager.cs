@@ -96,6 +96,8 @@ public class GameManager : MonoBehaviour
 
                 spawns = GameObject.FindGameObjectWithTag("Spawns").GetComponent<Spawns>().spawns;
 
+                UpdateListItems();
+
                 break;
 
             //any game scenes
@@ -115,6 +117,8 @@ public class GameManager : MonoBehaviour
                 {
                     playerManager.rb.isKinematic = false;
                 }
+
+                UpdateListItems();
 
                 break;
         }
