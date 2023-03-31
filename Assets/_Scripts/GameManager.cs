@@ -92,6 +92,7 @@ public class GameManager : MonoBehaviour
 
                 foreach (PlayerManager playerManager in Manager.PlayerManagers)
                 {
+                    playerManager.ready = false;
                     playerManager.rb.isKinematic = true;
                     playerManager.gameObject.transform.SetPositionAndRotation(spawns[playerManager.playerIdNumber - 1].position, spawns[playerManager.playerIdNumber - 1].rotation);
                 }
