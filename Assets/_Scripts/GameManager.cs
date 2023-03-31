@@ -340,19 +340,19 @@ public class GameManager : MonoBehaviour
                     playerListItemScript.username = playerManager.username;
                     playerListItemScript.SetPlayerListItemValues();
 
-                    if (playerManager.leader)
-                    {
-                        startGameButton.interactable = AllReady();
-                        endGameButton.interactable = true;
-                    }
-                    else
-                    {
-                        startGameButton.interactable = false;
-                        endGameButton.interactable = false;
-                    }
-
                     if (playerManager == localPlayerManager)
                     {
+                        if (playerManager.leader)
+                        {
+                            startGameButton.interactable = AllReady();
+                            endGameButton.interactable = true;
+                        }
+                        else
+                        {
+                            startGameButton.interactable = false;
+                            endGameButton.interactable = false;
+                        }
+
                         UpdateButton();
                     }
                 }
