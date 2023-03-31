@@ -41,7 +41,24 @@ public class PlayerManager : NetworkBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        SceneManager.activeSceneChanged += SceneChanged;
     }
+
+    private void SceneChanged(Scene current, Scene next)
+    {
+        if (leader)
+        {
+            if (next.name == "Lobby")
+            {
+                SteamMatchmaking.SetLobbyData((CSteamID)LobbyManager.instance.joinedLobbyID, "status", "In-Lobby");
+            }
+            else if (next.name != "Main")
+            {
+                SteamMatchmaking.SetLobbyData((CSteamID)LobbyManager.instance.joinedLobbyID, "status", "In-Game");
+            }
+        }
+    }
+
 
     public override void OnStartAuthority()
     {

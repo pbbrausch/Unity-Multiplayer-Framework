@@ -76,6 +76,7 @@ public class LobbyManager : MonoBehaviour
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAddressKey, SteamUser.GetSteamID().ToString());
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "name", SteamFriends.GetPersonaName().ToString() + "'s Lobby");
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "region", regions[regionIndex]);
+        SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "status", "In-Lobby");
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "active", "true");
     }
 
@@ -99,11 +100,6 @@ public class LobbyManager : MonoBehaviour
     {
         Debug.Log("Trying to join lobby with steam id: " + lobbyId.ToString());
         SteamMatchmaking.JoinLobby(lobbyId);
-    }
-
-    public void LeaveLobby(CSteamID lobbyID)
-    {
-        SteamMatchmaking.LeaveLobby(lobbyID);
     }
 
     public void HostLobby(int lobbyType, int maxPlayers, int regionType)

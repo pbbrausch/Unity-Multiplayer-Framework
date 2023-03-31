@@ -139,6 +139,7 @@ public class LobbyListManager : MonoBehaviour
 
                 lobbyListItemScript.lobbyId = (CSteamID)lobbyIDs[i].m_SteamID;
                 lobbyListItemScript.lobbyName = SteamMatchmaking.GetLobbyData((CSteamID)lobbyIDs[i].m_SteamID, "name");
+                lobbyListItemScript.lobbyStatus = SteamMatchmaking.GetLobbyData((CSteamID)lobbyIDs[i].m_SteamID, "status");
                 lobbyListItemScript.numberOfPlayers = SteamMatchmaking.GetNumLobbyMembers((CSteamID)lobbyIDs[i].m_SteamID);
                 lobbyListItemScript.maxNumberOfPlayers = SteamMatchmaking.GetLobbyMemberLimit((CSteamID)lobbyIDs[i].m_SteamID);
                 lobbyListItemScript.SetLobbyItemValues();
