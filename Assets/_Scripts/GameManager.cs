@@ -151,6 +151,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("Changing Scene");
 
         localPlayerManager.ChangeScene(sceneName);
+
+        UpdateListItems();
     }
 
     //Update Lobby Data
