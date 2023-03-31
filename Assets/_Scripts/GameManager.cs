@@ -340,8 +340,8 @@ public class GameManager : MonoBehaviour
                     {
                         if (SceneManager.GetActiveScene().name == "Lobby")
                         {
-                            playerManager.gameObject.transform.SetPositionAndRotation(spawns[playerManager.playerIdNumber - 1].position, spawns[playerManager.playerIdNumber - 1].rotation);
                             playerManager.rb.isKinematic = true;
+                            playerManager.gameObject.transform.SetPositionAndRotation(spawns[playerManager.playerIdNumber - 1].position, spawns[playerManager.playerIdNumber - 1].rotation);
                         }
 
                         if (playerManager.leader)
