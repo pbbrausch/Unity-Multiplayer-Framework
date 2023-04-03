@@ -23,6 +23,9 @@ public class PlayerManager : NetworkBehaviour
     //Player Info (updated)
     [SyncVar(hook = nameof(PlayerNameUpdate))] public string username;
     [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool ready;
+    [SyncVar(hook = nameof(PlayerColorUpdate))] public Color color;
+
+    public MeshRenderer mesh;
 
     private CustomNetworkManager manager;
 
@@ -46,6 +49,7 @@ public class PlayerManager : NetworkBehaviour
     public override void OnStartAuthority()
     {
         CmdSetPlayerName(SteamFriends.GetPersonaName().ToString());
+        CmdSetPlayerColor(new Color(FBPP.GetFloat("colorR") / 255, FBPP.GetFloat("colorG") / 255, FBPP.GetFloat("colorB") / 255));
 
         gameObject.name = "LocalGamePlayer";
 
@@ -60,7 +64,7 @@ public class PlayerManager : NetworkBehaviour
 
         GameManager.instance.UpdateLobbyName();
 
-        GameManager.instance.UpdatePlayerListItems();
+        GameManager.instance.UpdatePlayersAndListItems();
     }
 
     public void LeaveLobby()
@@ -93,7 +97,7 @@ public class PlayerManager : NetworkBehaviour
 
         Manager.PlayerManagers.Remove(this);
 
-        GameManager.instance.UpdatePlayerListItems();
+        GameManager.instance.UpdatePlayersAndListItems();
     }
 
     //Name
@@ -110,7 +114,7 @@ public class PlayerManager : NetworkBehaviour
         }
         if (isClient) //Client
         {
-            GameManager.instance.UpdatePlayerListItems();
+            GameManager.instance.UpdatePlayersAndListItems();
         }
     }
 
@@ -128,7 +132,7 @@ public class PlayerManager : NetworkBehaviour
         }
         if (isClient)
         {
-            GameManager.instance.UpdatePlayerListItems();
+            GameManager.instance.UpdatePlayersAndListItems();
         }
     }
     public void ChangeReady()
@@ -136,6 +140,23 @@ public class PlayerManager : NetworkBehaviour
         if (isOwned)
         {
             CmdSetPlayerReady();
+        }
+    }
+
+    //Color
+    private void CmdSetPlayerColor(Color color)
+    {
+        PlayerColorUpdate(this.color, color);
+    }
+    public void PlayerColorUpdate(Color oldValue, Color newValue)
+    {
+        if (isServer)
+        {
+            color = newValue;
+        }
+        if (isClient)
+        {
+            GameManager.instance.UpdatePlayersAndListItems();
         }
     }
 

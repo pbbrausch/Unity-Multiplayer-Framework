@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text lobbyNameText;
     [SerializeField] private TMP_Text readyText;
     [SerializeField] private Transform content;
+    [SerializeField] private Material temp;
 
     private PlayerManager localPlayerManager;
 
@@ -132,7 +133,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        UpdateListItems();
+        UpdatePlayersAndListItems();
     }
 
     public void FindLocalPlayerManager()
@@ -191,7 +192,7 @@ public class GameManager : MonoBehaviour
     }
 
     //Update PlayerListITems
-    public void UpdatePlayerListItems()
+    public void UpdatePlayersAndListItems()
     {
         if (!PlayerItemsCreated) { CreateListItems(); }
         if (playerListItems.Count < Manager.PlayerManagers.Count) { CreateNewListItems(); }
@@ -321,6 +322,10 @@ public class GameManager : MonoBehaviour
                 {
                     //PlayerManager
                     playerManager.usernameText.text = playerManager.username;
+
+                    Material mat = new(temp);
+                    mat.color = playerManager.color;
+                    playerManager.mesh.material = mat;
 
                     //PlayerListItemScript Icons
                     if (playerManager.isOwned || SteamFriends.GetFriendRelationship((CSteamID)playerManager.steamId) == EFriendRelationship.k_EFriendRelationshipFriend)

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.57845485, g: 0.6157291, b: 0.6087268, a: 1}
+  m_IndirectSpecularColor: {r: 0.57770085, g: 0.6152049, b: 0.60846514, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2487,6 +2487,7 @@ MonoBehaviour:
   lobbyNameText: {fileID: 1167391850}
   readyText: {fileID: 922638856}
   content: {fileID: 1575080804}
+  temp: {fileID: 2100000, guid: 9b0ffb001d1a48d48adf9949a69bba53, type: 2}
 --- !u!4 &1113481089
 Transform:
   m_ObjectHideFlags: 0
@@ -3399,7 +3400,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 564724903}
   m_HandleRect: {fileID: 564724902}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

@@ -166,6 +166,8 @@ MonoBehaviour:
   leader: 0
   username: 
   ready: 0
+  color: {r: 0, g: 0, b: 0, a: 0}
+  mesh: {fileID: 6058533192006284617}
 --- !u!136 &8940518441952987896
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -803,7 +805,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 9b0ffb001d1a48d48adf9949a69bba53, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
