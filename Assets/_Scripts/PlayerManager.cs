@@ -144,6 +144,7 @@ public class PlayerManager : NetworkBehaviour
     }
 
     //Color
+    [Command]
     private void CmdSetPlayerColor(Color color)
     {
         PlayerColorUpdate(this.color, color);
