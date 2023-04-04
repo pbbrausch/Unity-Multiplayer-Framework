@@ -89,7 +89,7 @@
             "id": "a16f877c-6301-4c97-b504-e323ebbc088a",
             "actions": [
                 {
-                    "name": "Open",
+                    "name": "Open/Close",
                     "type": "Button",
                     "id": "7205086b-4a8a-43ea-9927-121dfbcfb767",
                     "expectedControlType": "Button",
@@ -106,7 +106,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Open",
+                    "action": "Open/Close",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -117,7 +117,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Open",
+                    "action": "Open/Close",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

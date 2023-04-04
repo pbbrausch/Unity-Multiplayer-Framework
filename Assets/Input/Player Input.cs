@@ -111,7 +111,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""id"": ""a16f877c-6301-4c97-b504-e323ebbc088a"",
             ""actions"": [
                 {
-                    ""name"": ""Open"",
+                    ""name"": ""Open/Close"",
                     ""type"": ""Button"",
                     ""id"": ""7205086b-4a8a-43ea-9927-121dfbcfb767"",
                     ""expectedControlType"": ""Button"",
@@ -128,7 +128,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Open"",
+                    ""action"": ""Open/Close"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -139,7 +139,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Open"",
+                    ""action"": ""Open/Close"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -153,7 +153,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_OnFoot_Movement = m_OnFoot.FindAction("Movement", throwIfNotFound: true);
         // Scoreboard
         m_Scoreboard = asset.FindActionMap("Scoreboard", throwIfNotFound: true);
-        m_Scoreboard_Open = m_Scoreboard.FindAction("Open", throwIfNotFound: true);
+        m_Scoreboard_OpenClose = m_Scoreboard.FindAction("Open/Close", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -261,12 +261,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     // Scoreboard
     private readonly InputActionMap m_Scoreboard;
     private List<IScoreboardActions> m_ScoreboardActionsCallbackInterfaces = new List<IScoreboardActions>();
-    private readonly InputAction m_Scoreboard_Open;
+    private readonly InputAction m_Scoreboard_OpenClose;
     public struct ScoreboardActions
     {
         private @PlayerInput m_Wrapper;
         public ScoreboardActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Open => m_Wrapper.m_Scoreboard_Open;
+        public InputAction @OpenClose => m_Wrapper.m_Scoreboard_OpenClose;
         public InputActionMap Get() { return m_Wrapper.m_Scoreboard; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -276,16 +276,16 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_ScoreboardActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_ScoreboardActionsCallbackInterfaces.Add(instance);
-            @Open.started += instance.OnOpen;
-            @Open.performed += instance.OnOpen;
-            @Open.canceled += instance.OnOpen;
+            @OpenClose.started += instance.OnOpenClose;
+            @OpenClose.performed += instance.OnOpenClose;
+            @OpenClose.canceled += instance.OnOpenClose;
         }
 
         private void UnregisterCallbacks(IScoreboardActions instance)
         {
-            @Open.started -= instance.OnOpen;
-            @Open.performed -= instance.OnOpen;
-            @Open.canceled -= instance.OnOpen;
+            @OpenClose.started -= instance.OnOpenClose;
+            @OpenClose.performed -= instance.OnOpenClose;
+            @OpenClose.canceled -= instance.OnOpenClose;
         }
 
         public void RemoveCallbacks(IScoreboardActions instance)
@@ -309,6 +309,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public interface IScoreboardActions
     {
-        void OnOpen(InputAction.CallbackContext context);
+        void OnOpenClose(InputAction.CallbackContext context);
     }
 }
