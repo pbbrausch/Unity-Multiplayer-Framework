@@ -17,14 +17,10 @@ public class PlayerInputModule : MonoBehaviour
     private void OnEnable()
     {
         playerInput.Enable();
-        playerInput.OnFoot.Movement.performed += OnMovement;
-        playerInput.OnFoot.Movement.canceled += OnMovementStopped;
     }
 
     private void OnDisable()
     {
         playerInput.Disable();
-        playerInput.OnFoot.Movement.performed -= OnMovement;
-        playerInput.OnFoot.Movement.canceled -= OnMovementStopped;
     }
 }
