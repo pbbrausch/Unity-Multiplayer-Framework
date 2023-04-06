@@ -13,6 +13,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Look",
+                    "type": "Value",
+                    "id": "86e727c7-c604-4fd2-90b8-334a19319619",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -76,22 +85,53 @@
                     "id": "2af9caf0-bb48-4adc-a34e-655b569a1fca",
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "StickDeadzone",
                     "groups": "",
                     "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1577a1ed-9826-4696-a0e6-9a4c9e03cde9",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7d060944-96a8-4702-8106-d67e1dc8bf1c",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
             ]
         },
         {
-            "name": "Scoreboard",
+            "name": "Menus",
             "id": "a16f877c-6301-4c97-b504-e323ebbc088a",
             "actions": [
                 {
-                    "name": "Open/Close",
+                    "name": "Scoreboard",
                     "type": "Button",
                     "id": "7205086b-4a8a-43ea-9927-121dfbcfb767",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Options",
+                    "type": "Button",
+                    "id": "dd0fe407-6eb8-4b1a-bbe4-502a4121b711",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -106,18 +146,40 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Open/Close",
+                    "action": "Scoreboard",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "1fde087f-9bb4-4c57-b360-2518ebcbdea7",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Open/Close",
+                    "action": "Scoreboard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c87a3c14-a2df-4f4f-adc9-58c4bf36906b",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Options",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9c6a065c-efc9-4e29-b6ba-a544b0bde9ff",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Options",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

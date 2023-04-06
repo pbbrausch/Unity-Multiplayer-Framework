@@ -35,6 +35,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""86e727c7-c604-4fd2-90b8-334a19319619"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -98,22 +107,53 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""id"": ""2af9caf0-bb48-4adc-a34e-655b569a1fca"",
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""StickDeadzone"",
                     ""groups"": """",
                     ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1577a1ed-9826-4696-a0e6-9a4c9e03cde9"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7d060944-96a8-4702-8106-d67e1dc8bf1c"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
             ]
         },
         {
-            ""name"": ""Scoreboard"",
+            ""name"": ""Menus"",
             ""id"": ""a16f877c-6301-4c97-b504-e323ebbc088a"",
             ""actions"": [
                 {
-                    ""name"": ""Open/Close"",
+                    ""name"": ""Scoreboard"",
                     ""type"": ""Button"",
                     ""id"": ""7205086b-4a8a-43ea-9927-121dfbcfb767"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Options"",
+                    ""type"": ""Button"",
+                    ""id"": ""dd0fe407-6eb8-4b1a-bbe4-502a4121b711"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -128,18 +168,40 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Open/Close"",
+                    ""action"": ""Scoreboard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""1fde087f-9bb4-4c57-b360-2518ebcbdea7"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Open/Close"",
+                    ""action"": ""Scoreboard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c87a3c14-a2df-4f4f-adc9-58c4bf36906b"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Options"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c6a065c-efc9-4e29-b6ba-a544b0bde9ff"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Options"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -151,9 +213,11 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // OnFoot
         m_OnFoot = asset.FindActionMap("OnFoot", throwIfNotFound: true);
         m_OnFoot_Movement = m_OnFoot.FindAction("Movement", throwIfNotFound: true);
-        // Scoreboard
-        m_Scoreboard = asset.FindActionMap("Scoreboard", throwIfNotFound: true);
-        m_Scoreboard_OpenClose = m_Scoreboard.FindAction("Open/Close", throwIfNotFound: true);
+        m_OnFoot_Look = m_OnFoot.FindAction("Look", throwIfNotFound: true);
+        // Menus
+        m_Menus = asset.FindActionMap("Menus", throwIfNotFound: true);
+        m_Menus_Scoreboard = m_Menus.FindAction("Scoreboard", throwIfNotFound: true);
+        m_Menus_Options = m_Menus.FindAction("Options", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -216,11 +280,13 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_OnFoot;
     private List<IOnFootActions> m_OnFootActionsCallbackInterfaces = new List<IOnFootActions>();
     private readonly InputAction m_OnFoot_Movement;
+    private readonly InputAction m_OnFoot_Look;
     public struct OnFootActions
     {
         private @PlayerInput m_Wrapper;
         public OnFootActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_OnFoot_Movement;
+        public InputAction @Look => m_Wrapper.m_OnFoot_Look;
         public InputActionMap Get() { return m_Wrapper.m_OnFoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -233,6 +299,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
         }
 
         private void UnregisterCallbacks(IOnFootActions instance)
@@ -240,6 +309,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
         }
 
         public void RemoveCallbacks(IOnFootActions instance)
@@ -258,57 +330,67 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public OnFootActions @OnFoot => new OnFootActions(this);
 
-    // Scoreboard
-    private readonly InputActionMap m_Scoreboard;
-    private List<IScoreboardActions> m_ScoreboardActionsCallbackInterfaces = new List<IScoreboardActions>();
-    private readonly InputAction m_Scoreboard_OpenClose;
-    public struct ScoreboardActions
+    // Menus
+    private readonly InputActionMap m_Menus;
+    private List<IMenusActions> m_MenusActionsCallbackInterfaces = new List<IMenusActions>();
+    private readonly InputAction m_Menus_Scoreboard;
+    private readonly InputAction m_Menus_Options;
+    public struct MenusActions
     {
         private @PlayerInput m_Wrapper;
-        public ScoreboardActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @OpenClose => m_Wrapper.m_Scoreboard_OpenClose;
-        public InputActionMap Get() { return m_Wrapper.m_Scoreboard; }
+        public MenusActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Scoreboard => m_Wrapper.m_Menus_Scoreboard;
+        public InputAction @Options => m_Wrapper.m_Menus_Options;
+        public InputActionMap Get() { return m_Wrapper.m_Menus; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ScoreboardActions set) { return set.Get(); }
-        public void AddCallbacks(IScoreboardActions instance)
+        public static implicit operator InputActionMap(MenusActions set) { return set.Get(); }
+        public void AddCallbacks(IMenusActions instance)
         {
-            if (instance == null || m_Wrapper.m_ScoreboardActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_ScoreboardActionsCallbackInterfaces.Add(instance);
-            @OpenClose.started += instance.OnOpenClose;
-            @OpenClose.performed += instance.OnOpenClose;
-            @OpenClose.canceled += instance.OnOpenClose;
+            if (instance == null || m_Wrapper.m_MenusActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MenusActionsCallbackInterfaces.Add(instance);
+            @Scoreboard.started += instance.OnScoreboard;
+            @Scoreboard.performed += instance.OnScoreboard;
+            @Scoreboard.canceled += instance.OnScoreboard;
+            @Options.started += instance.OnOptions;
+            @Options.performed += instance.OnOptions;
+            @Options.canceled += instance.OnOptions;
         }
 
-        private void UnregisterCallbacks(IScoreboardActions instance)
+        private void UnregisterCallbacks(IMenusActions instance)
         {
-            @OpenClose.started -= instance.OnOpenClose;
-            @OpenClose.performed -= instance.OnOpenClose;
-            @OpenClose.canceled -= instance.OnOpenClose;
+            @Scoreboard.started -= instance.OnScoreboard;
+            @Scoreboard.performed -= instance.OnScoreboard;
+            @Scoreboard.canceled -= instance.OnScoreboard;
+            @Options.started -= instance.OnOptions;
+            @Options.performed -= instance.OnOptions;
+            @Options.canceled -= instance.OnOptions;
         }
 
-        public void RemoveCallbacks(IScoreboardActions instance)
+        public void RemoveCallbacks(IMenusActions instance)
         {
-            if (m_Wrapper.m_ScoreboardActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_MenusActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IScoreboardActions instance)
+        public void SetCallbacks(IMenusActions instance)
         {
-            foreach (var item in m_Wrapper.m_ScoreboardActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_MenusActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_ScoreboardActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_MenusActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public ScoreboardActions @Scoreboard => new ScoreboardActions(this);
+    public MenusActions @Menus => new MenusActions(this);
     public interface IOnFootActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
     }
-    public interface IScoreboardActions
+    public interface IMenusActions
     {
-        void OnOpenClose(InputAction.CallbackContext context);
+        void OnScoreboard(InputAction.CallbackContext context);
+        void OnOptions(InputAction.CallbackContext context);
     }
 }
