@@ -8,6 +8,7 @@ public class PlayerManager : NetworkBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject clientSide;
+    [SerializeField] private GameObject cameraHolder;
     public Transform userInfoCanvas;
     public TMP_Text usernameText;
     public Rigidbody rb;
@@ -65,6 +66,11 @@ public class PlayerManager : NetworkBehaviour
         GameManager.instance.UpdateLobbyName();
 
         GameManager.instance.UpdatePlayersAndListItems();
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(cameraHolder);
     }
 
     public void LeaveLobby()

@@ -1,18 +1,32 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class PlayerUsernameModule : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Transform camPos;
+
+    [HideInInspector] public List<Transform> userInfoCanvases = new();
+
+    private CustomNetworkManager manager;
+
+    private CustomNetworkManager Manager
     {
-        
+        get
+        {
+            if (manager != null)
+            {
+                return manager;
+            }
+            return manager = NetworkManager.singleton as CustomNetworkManager;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void LateUpdate()
     {
-        
+        foreach (PlayerManager player in Manager.PlayerManagers)
+        {
+            player.userInfoCanvas.LookAt(player.userInfoCanvas.position + camPos.rotation * Vector3.forward, camPos.rotation * Vector3.up);
+        }
     }
 }

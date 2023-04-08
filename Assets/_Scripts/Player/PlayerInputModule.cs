@@ -35,8 +35,16 @@ public class PlayerInputModule : MonoBehaviour
         playerInput.Enable();
 
         //Make Actions
-        onFoot.Movement.performed += movementModule.MoveVector;
-        onFoot.Movement.canceled += movementModule.MoveVector;
+        onFoot.Move.performed += movementModule.MoveVector;
+        onFoot.Move.canceled += movementModule.MoveVector;
+
+        onFoot.Sprint.performed += movementModule.ChangeSprint;
+        onFoot.Sprint.canceled += movementModule.ChangeSprint;
+
+        onFoot.Crouch.performed += movementModule.Crouch;
+        onFoot.Crouch.canceled += movementModule.Crouch;
+
+        onFoot.Jump.performed += movementModule.Jump;
 
         onFoot.Look.performed += cameraModule.Look;
         onFoot.Look.canceled += cameraModule.Look;
@@ -53,8 +61,16 @@ public class PlayerInputModule : MonoBehaviour
         playerInput.Disable();
 
         //Dispose Actions
-        onFoot.Movement.performed -= movementModule.MoveVector;
-        onFoot.Movement.canceled -= movementModule.MoveVector;
+        onFoot.Move.performed -= movementModule.MoveVector;
+        onFoot.Move.canceled -= movementModule.MoveVector;
+
+        onFoot.Sprint.performed -= movementModule.ChangeSprint;
+        onFoot.Sprint.canceled -= movementModule.ChangeSprint;
+
+        onFoot.Crouch.performed -= movementModule.Crouch;
+        onFoot.Crouch.canceled -= movementModule.Crouch;
+
+        onFoot.Jump.performed -= movementModule.Jump;
 
         onFoot.Look.performed -= cameraModule.Look;
         onFoot.Look.canceled -= cameraModule.Look;

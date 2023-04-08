@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button startGameButton;
     [SerializeField] private Button readyButton;
     [SerializeField] private Button endGameButton;
+    [SerializeField] private Button leaveButton;
     [SerializeField] private TMP_Text lobbyNameText;
     [SerializeField] private TMP_Text readyText;
     [SerializeField] private Transform content;
@@ -90,7 +91,9 @@ public class GameManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 Debug.Log("Going to Lobby");
-                scoreboard.gameObject.SetActive(true);
+                scoreboard.SetActive(true);
+                options.SetActive(false);
+                leaveButton.gameObject.SetActive(true);
                 startGameButton.gameObject.SetActive(true);
                 readyButton.gameObject.SetActive(true);
                 endGameButton.gameObject.SetActive(false);
@@ -122,7 +125,8 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Going to Game Scene");
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                scoreboard.gameObject.SetActive(false);
+                scoreboard.SetActive(false);
+                leaveButton.gameObject.SetActive(false);
                 startGameButton.gameObject.SetActive(false);
                 readyButton.gameObject.SetActive(false);
                 endGameButton.gameObject.SetActive(true);

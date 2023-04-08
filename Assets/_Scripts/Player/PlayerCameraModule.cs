@@ -8,6 +8,7 @@ public class PlayerCameraModule : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform orientation;
+    [SerializeField] private Transform playerCamera;
 
     private float sensX, sensY, xRot, yRot;
 
@@ -23,17 +24,21 @@ public class PlayerCameraModule : MonoBehaviour
     {
         lookVector = callback.ReadValue<Vector2>();
 
-        float mouseX = lookVector.x * Time.deltaTime * sensX;
-        float mouseY = lookVector.y * Time.deltaTime * sensY;
+        float mouseX = 10 * lookVector.x * Time.deltaTime * sensX;
+        float mouseY = 10 * lookVector.y * Time.deltaTime * sensY;
 
         yRot += mouseX;
 
         xRot -= mouseY;
+        xRot = Mathf.Clamp(xRot, -75f, 75f);
+
+        playerCamera.rotation = Quaternion.Euler(xRot, yRot, 0);
+        orientation.rotation = Quaternion.Euler(0, yRot, 0);
     }
 
-    public void ChangeCursorMode(bool parameter)
+    public void ChangeCursorMode(bool open)
     {
-        if (parameter)
+        if (open)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -47,29 +52,21 @@ public class PlayerCameraModule : MonoBehaviour
 
     public void ChangeScoreboard(InputAction.CallbackContext callback)
     {
-        string sceneName = SceneManager.GetActiveScene().name;
-        float press = callback.ReadValue<float>();
+        if (SceneManager.GetActiveScene().name == "Lobby") { return; }
 
-        if (sceneName == "Lobby")
-        {
-            return;
-        }
-        else
-        {
-            ChangeCursorMode(press < 0.1f);
-        }
+        bool open = GameManager.instance.scoreboard.activeSelf;
 
-        GameManager.instance.scoreboard.SetActive(press > 0.1f);
+        GameManager.instance.scoreboard.SetActive(!open);
     }
 
     public void ChangeOptionsMenu(InputAction.CallbackContext callback)
     {
-        float press = callback.ReadValue<float>();
+        bool open = GameManager.instance.options.activeSelf;
 
-        GameManager.instance.options.SetActive(press > 0.1f);
+        GameManager.instance.options.SetActive(!open);
 
         if (SceneManager.GetActiveScene().name == "Lobby") { return; }
 
-        ChangeCursorMode(press < 0.1f);
+        ChangeCursorMode(open);
     }
 }
