@@ -32,7 +32,6 @@ public class PlayerMovementModule : MonoBehaviour
     [Header("Slopes")]
     [SerializeField] private float maxSlopeAngle;
     private bool exitingSlope;
-    private bool onLargeSlope;
 
     [Header("Ground Check")]
     [SerializeField] private float playerHeight = 2f;
@@ -108,7 +107,7 @@ public class PlayerMovementModule : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext _)
     {
-        if (!readyToJump || !Grounded() || onLargeSlope) { return; }
+        if (!readyToJump || !Grounded()) { return; }
 
         exitingSlope = true;
 
@@ -161,14 +160,7 @@ public class PlayerMovementModule : MonoBehaviour
             }
             else
             {
-                if (onLargeSlope && !OnSlope())
-                {
-                    rb.AddForce(moveSpeed * moveDirection.normalized, ForceMode.Force);
-                }
-                else
-                {
-                    rb.AddForce(10 * moveSpeed * moveDirection.normalized, ForceMode.Force);
-                }
+                rb.AddForce(10 * moveSpeed * moveDirection.normalized, ForceMode.Force);
             }
         }
         else
@@ -215,8 +207,6 @@ public class PlayerMovementModule : MonoBehaviour
         if (Physics.Raycast(transform.root.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
         {
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-
-            onLargeSlope = angle >= maxSlopeAngle;
 
             return angle < maxSlopeAngle && angle != 0;
         }

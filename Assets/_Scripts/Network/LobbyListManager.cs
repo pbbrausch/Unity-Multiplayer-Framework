@@ -82,6 +82,7 @@ public class LobbyListManager : MonoBehaviour
 
         //Filters
         SteamMatchmaking.AddRequestLobbyListStringFilter("region", regions[regionDropDown.value], ELobbyComparison.k_ELobbyComparisonEqual);
+        SteamMatchmaking.AddRequestLobbyListStringFilter("active", "true", ELobbyComparison.k_ELobbyComparisonEqual);
         SteamMatchmaking.AddRequestLobbyListFilterSlotsAvailable((int)slotsAvaliableSlider.value);
         SteamMatchmaking.AddRequestLobbyListResultCountFilter(100);
 

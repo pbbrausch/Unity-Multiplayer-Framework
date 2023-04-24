@@ -36,9 +36,14 @@ public class PlayerCameraModule : MonoBehaviour
         orientation.rotation = Quaternion.Euler(0, yRot, 0);
     }
 
-    public void ChangeCursorMode(bool open)
+    private void OnDestroy()
     {
-        if (open)
+        ChangeCursorMode(false);
+    }
+
+    public void ChangeCursorMode(bool lockCursor)
+    {
+        if (lockCursor)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -54,19 +59,19 @@ public class PlayerCameraModule : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Lobby") { return; }
 
-        bool open = GameManager.instance.scoreboard.activeSelf;
+        bool open = callback.ReadValue<float>() > 0.1f;
 
-        GameManager.instance.scoreboard.SetActive(!open);
+        GameManager.instance.scoreboard.SetActive(open);
     }
 
     public void ChangeOptionsMenu(InputAction.CallbackContext callback)
     {
-        bool open = GameManager.instance.options.activeSelf;
-
-        GameManager.instance.options.SetActive(!open);
-
         if (SceneManager.GetActiveScene().name == "Lobby") { return; }
 
-        ChangeCursorMode(open);
+        bool open = callback.ReadValue<float>() > 0.1f;
+
+        GameManager.instance.options.SetActive(open);
+
+        ChangeCursorMode(!open);
     }
 }
