@@ -321,13 +321,6 @@ public class GameManager : MonoBehaviour
                     playerListItemScript.username = playerManager.username;
                     playerListItemScript.SetPlayerListItemValues();
 
-                    ulong kickId = GetKickId();
-                    if (playerManager.steamId == kickId && playerManager == localPlayerManager)
-                    {
-                        Debug.Log("Kicked");
-                        localPlayerManager.LeaveLobby();
-                    }
-
                     if (SceneManager.GetActiveScene().name == "Lobby")
                     {
                         playerManager.rb.isKinematic = true;
@@ -356,13 +349,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void KickPlayer()
+    {
+        foreach (PlayerManager playerManager in Manager.PlayerManagers)
+        {
+            ulong kickId = GetKickId();
+            Debug.Log(kickId);
+            if (playerManager.steamId == kickId && playerManager == localPlayerManager)
+            {
+                Debug.Log("Kicked");
+                localPlayerManager.LeaveLobby();
+            }
+        }
+    }
+
     private ulong GetKickId()
     {
         foreach (PlayerManager playerManager in Manager.PlayerManagers)
         {
-            if (playerManager.leader && playerManager.steamId != localPlayerManager.steamId)
+            if (playerManager.leader)
             {
-                return playerManager.steamId;
+                return playerManager.playerToKickSteamId;
             }
         }
 
