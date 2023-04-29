@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Steamworks;
+using Mirror;
 
 public class PlayerListItem : MonoBehaviour
 {
@@ -26,6 +27,20 @@ public class PlayerListItem : MonoBehaviour
     public bool ready;
 
     protected Callback<AvatarImageLoaded_t> avatarImageLoaded;
+
+    private CustomNetworkManager manager;
+
+    private CustomNetworkManager Manager
+    {
+        get
+        {
+            if (manager != null)
+            {
+                return manager;
+            }
+            return manager = NetworkManager.singleton as CustomNetworkManager;
+        }
+    }
 
     private void Awake()
     {
@@ -64,7 +79,7 @@ public class PlayerListItem : MonoBehaviour
                 if (GameManager.instance.localPlayerManager.leader)
                 {
                     SteamMatchmaking.SetLobbyOwner((CSteamID)LobbyManager.instance.joinedLobbyID, (CSteamID)steamId);
-                    foreach (PlayerManager playerManager in GameManager.instance.Manager.PlayerManagers)
+                    foreach (PlayerManager playerManager in Manager.PlayerManagers)
                     {
                         playerManager.leader = false;
                         if ((CSteamID)playerManager.steamId == SteamMatchmaking.GetLobbyOwner((CSteamID)LobbyManager.instance.joinedLobbyID))

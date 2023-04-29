@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     private CustomNetworkManager manager;
 
-    public CustomNetworkManager Manager
+    private CustomNetworkManager Manager
     {
         get
         {
