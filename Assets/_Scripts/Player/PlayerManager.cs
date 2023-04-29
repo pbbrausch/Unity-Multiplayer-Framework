@@ -26,7 +26,7 @@ public class PlayerManager : NetworkBehaviour
     [SyncVar(hook = nameof(PlayerNameUpdate))] public string username;
     [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool ready;
     [SyncVar(hook = nameof(PlayerColorUpdate))] public Color color;
-    [SyncVar(hook = nameof(PlayerKickUpdate))] public int playerToKickId;
+    [SyncVar(hook = nameof(PlayerKickUpdate))] public ulong playerToKickSteamId;
 
     public MeshRenderer mesh;
 
@@ -110,26 +110,26 @@ public class PlayerManager : NetworkBehaviour
 
     //Kick Player
     [Command]
-    private void CmdAddKickPlayer(int playerIdNumber)
+    private void CmdAddKickPlayer(ulong steamId)
     {
-        PlayerKickUpdate(playerToKickId, playerIdNumber);
+        PlayerKickUpdate(playerToKickSteamId, steamId);
     }
-    public void PlayerKickUpdate(int oldValue, int newValue)
+    public void PlayerKickUpdate(ulong oldValue, ulong newValue)
     {
         if (isServer)
         {
-            playerToKickId = newValue;
+            playerToKickSteamId = newValue;
         }
         if (isClient) //Client
         {
             GameManager.instance.UpdatePlayersAndListItems();
         }
     }
-    public void KickPlayer(int playerIdNumber)
+    public void KickPlayer(ulong steamId)
     {
         if (isOwned)
         {
-            CmdAddKickPlayer(playerIdNumber);
+            CmdAddKickPlayer(steamId);
         }
     }
 

@@ -158,9 +158,9 @@ public class GameManager : MonoBehaviour
         localPlayerManager.LeaveLobby();
     }
 
-    public void AddKickPlayer(int playerIdNumber)
+    public void AddKickPlayer(ulong steamId)
     {
-        localPlayerManager.KickPlayer(playerIdNumber);
+        localPlayerManager.KickPlayer(steamId);
     }
 
     //Change Ready
@@ -321,14 +321,11 @@ public class GameManager : MonoBehaviour
                     playerListItemScript.username = playerManager.username;
                     playerListItemScript.SetPlayerListItemValues();
 
-                    int kickId = GetKickId();
-                    if (kickId != 0)
+                    ulong kickId = GetKickId();
+                    if (playerManager.steamId == kickId && playerManager == localPlayerManager)
                     {
-                        if (playerManager == localPlayerManager)
-                        {
-                            Debug.Log("Kicked");
-                            localPlayerManager.LeaveLobby();
-                        }
+                        Debug.Log("Kicked");
+                        localPlayerManager.LeaveLobby();
                     }
 
                     if (SceneManager.GetActiveScene().name == "Lobby")
@@ -359,13 +356,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private int GetKickId()
+    private ulong GetKickId()
     {
         foreach (PlayerManager playerManager in Manager.PlayerManagers)
         {
-            if (playerManager.leader && playerManager.playerToKickId != 0)
+            if (playerManager.leader && playerManager.steamId != localPlayerManager.steamId)
             {
-                return playerManager.playerToKickId;
+                return playerManager.steamId;
             }
         }
 
