@@ -122,7 +122,7 @@ public class PlayerManager : NetworkBehaviour
         }
         if (isClient) //Client
         {
-            GameManager.instance.KickPlayer();
+            GameManager.instance.UpdatePlayersAndListItems();
         }
     }
     public void KickPlayer(ulong steamId)

@@ -317,6 +317,14 @@ public class GameManager : MonoBehaviour
                         playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[0].position;
                     }
 
+                    if (playerManager.playerToKickSteamId > 0 && playerManager.leader)
+                    {
+                        if (playerManager.playerToKickSteamId == localPlayerManager.steamId)
+                        {
+                            LeaveLobby();
+                        }
+                    }
+
                     playerListItemScript.ready = playerManager.ready;
                     playerListItemScript.username = playerManager.username;
                     playerListItemScript.SetPlayerListItemValues();
@@ -347,32 +355,6 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-    }
-
-    public void KickPlayer()
-    {
-        ulong kickId = GetKickId();
-
-        foreach (PlayerManager playerManager in Manager.PlayerManagers)
-        {
-            if (playerManager.steamId == kickId && playerManager == localPlayerManager)
-            {
-                LeaveLobby();
-            }
-        }
-    }
-
-    private ulong GetKickId()
-    {
-        foreach (PlayerManager playerManager in Manager.PlayerManagers)
-        {
-            if (playerManager.leader)
-            {
-                return playerManager.playerToKickSteamId;
-            }
-        }
-
-        return 0;
     }
 
     private bool AllReady()

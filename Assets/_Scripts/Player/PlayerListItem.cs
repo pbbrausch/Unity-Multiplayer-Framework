@@ -79,6 +79,7 @@ public class PlayerListItem : MonoBehaviour
                 if (GameManager.instance.localPlayerManager.leader)
                 {
                     GameManager.instance.AddKickPlayer(steamId);
+                    GameManager.instance.UpdatePlayersAndListItems();
                 }
                 break;
         }
