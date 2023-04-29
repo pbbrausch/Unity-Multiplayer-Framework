@@ -326,6 +326,7 @@ public class GameManager : MonoBehaviour
                     {
                         if (playerManager == localPlayerManager)
                         {
+                            Debug.Log("Kicked");
                             localPlayerManager.LeaveLobby();
                         }
                     }
