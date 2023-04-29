@@ -337,6 +337,8 @@ public class GameManager : MonoBehaviour
 
                     if (playerManager == localPlayerManager)
                     {
+                        UpdateButton();
+
                         if (playerManager.leader)
                         {
                             startGameButton.interactable = AllReady();
@@ -349,8 +351,6 @@ public class GameManager : MonoBehaviour
                             endGameButton.interactable = false;
                             mapMenuButton.interactable = false;
                         }
-
-                        UpdateButton();
                     }
                 }
             }
