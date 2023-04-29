@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     public GameObject scoreboard;
     public GameObject options;
 
-    private PlayerManager localPlayerManager;
+    [HideInInspector] public PlayerManager localPlayerManager;
 
     private Transform[] spawns;
 
@@ -61,6 +61,11 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public bool IsOwner()
+    {
+        return SteamMatchmaking.GetLobbyOwner((CSteamID)LobbyManager.instance.joinedLobbyID) == (CSteamID)localPlayerManager.steamId;
     }
 
     private void SceneChanged(Scene current, Scene next)
@@ -158,6 +163,11 @@ public class GameManager : MonoBehaviour
         localPlayerManager.LeaveLobby();
     }
 
+    public void AddKickPlayer(int playerIdNumber)
+    {
+        localPlayerManager.KickPlayer(playerIdNumber);
+    }
+
     //Change Ready
     public void ChangeReady()
     {
@@ -220,40 +230,21 @@ public class GameManager : MonoBehaviour
             PlayerListItem playerListItemScript = playerListItem.GetComponent<PlayerListItem>();
 
             //PlayerListItemScript                        
-            if (playerManager.isOwned || SteamFriends.GetFriendRelationship((CSteamID)playerManager.steamId) == EFriendRelationship.k_EFriendRelationshipFriend)
+            if (IsOwner())
             {
-                playerListItemScript.addFriendButton.SetActive(false);
-                playerListItemScript.leaderIcon.transform.position = playerListItemScript.leaderIconsPos[0].position;
-                if (playerManager.leader)
-                {
-                    playerListItemScript.leaderIcon.SetActive(true);
-                    playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[1].position;
-                }
-                else
-                {
-                    playerListItemScript.leaderIcon.SetActive(false);
-                    playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[0].position;
-                }
+                playerListItemScript.leaderIcon.SetActive(true);
+                playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[1].position;
             }
             else
             {
-                playerListItemScript.addFriendButton.SetActive(true);
-                playerListItemScript.leaderIcon.transform.position = playerListItemScript.leaderIconsPos[1].position;
-                if (playerManager.leader)
-                {
-                    playerListItemScript.leaderIcon.SetActive(true);
-                    playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[2].position;
-                }
-                else
-                {
-                    playerListItemScript.leaderIcon.SetActive(false);
-                    playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[1].position;
-                }
+                playerListItemScript.leaderIcon.SetActive(false);
+                playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[0].position;
             }
 
             playerListItemScript.ready = playerManager.ready;
             playerListItemScript.username = playerManager.username;
-            playerListItemScript.connectionID = playerManager.connectionId;
+            playerListItemScript.connectionId = playerManager.connectionId;
+            playerListItemScript.playerIdNumber = playerManager.playerIdNumber;
             playerListItemScript.steamId = playerManager.steamId;
             playerListItemScript.SetPlayerListItemValues();
 
@@ -271,46 +262,27 @@ public class GameManager : MonoBehaviour
     {
         foreach (PlayerManager playerManager in Manager.PlayerManagers)
         {
-            if (!playerListItems.Any(b => b.connectionID == playerManager.connectionId))
+            if (!playerListItems.Any(b => b.connectionId == playerManager.connectionId))
             {
                 GameObject playerListItem = Instantiate(playerListItemPrefab);
                 PlayerListItem playerListItemScript = playerListItem.GetComponent<PlayerListItem>();
-
-                //PlayerListItemScript                        
-                if (playerManager.isOwned || SteamFriends.GetFriendRelationship((CSteamID)playerManager.steamId) == EFriendRelationship.k_EFriendRelationshipFriend)
+               
+                //PlayerListItemScript           s             
+                if (IsOwner())
                 {
-                    playerListItemScript.addFriendButton.SetActive(false);
-                    playerListItemScript.leaderIcon.transform.position = playerListItemScript.leaderIconsPos[0].position;
-                    if (playerManager.leader)
-                    {
-                        playerListItemScript.leaderIcon.SetActive(true);
-                        playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[1].position;
-                    }
-                    else
-                    {
-                        playerListItemScript.leaderIcon.SetActive(false);
-                        playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[0].position;
-                    }
+                    playerListItemScript.leaderIcon.SetActive(true);
+                    playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[1].position;
                 }
                 else
                 {
-                    playerListItemScript.addFriendButton.SetActive(true);
-                    playerListItemScript.leaderIcon.transform.position = playerListItemScript.leaderIconsPos[1].position;
-                    if (playerManager.leader)
-                    {
-                        playerListItemScript.leaderIcon.SetActive(true);
-                        playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[2].position;
-                    }
-                    else
-                    {
-                        playerListItemScript.leaderIcon.SetActive(false);
-                        playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[1].position;
-                    }
+                    playerListItemScript.leaderIcon.SetActive(false);
+                    playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[0].position;
                 }
 
                 playerListItemScript.ready = playerManager.ready;
                 playerListItemScript.username = playerManager.username;
-                playerListItemScript.connectionID = playerManager.connectionId;
+                playerListItemScript.connectionId = playerManager.connectionId;
+                playerListItemScript.playerIdNumber = playerManager.playerIdNumber;
                 playerListItemScript.steamId = playerManager.steamId;
                 playerListItemScript.SetPlayerListItemValues();
 
@@ -329,7 +301,7 @@ public class GameManager : MonoBehaviour
         {
             foreach (PlayerListItem playerListItemScript in playerListItems)
             {
-                if (playerListItemScript.connectionID == playerManager.connectionId)
+                if (playerListItemScript.connectionId == playerManager.connectionId)
                 {
                     //PlayerManager
                     playerManager.usernameText.text = playerManager.username;
@@ -338,41 +310,30 @@ public class GameManager : MonoBehaviour
                     mat.color = playerManager.color;
                     playerManager.mesh.material = mat;
 
-                    //PlayerListItemScript Icons
-                    if (playerManager.isOwned || SteamFriends.GetFriendRelationship((CSteamID)playerManager.steamId) == EFriendRelationship.k_EFriendRelationshipFriend)
+                    //PlayerListItemScript                        
+                    if (IsOwner())
                     {
-                        playerListItemScript.addFriendButton.SetActive(false);
-                        playerListItemScript.leaderIcon.transform.position = playerListItemScript.leaderIconsPos[0].position;
-                        if (playerManager.leader)
-                        {
-                            playerListItemScript.leaderIcon.SetActive(true);
-                            playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[1].position;
-                        }
-                        else
-                        {
-                            playerListItemScript.leaderIcon.SetActive(false);
-                            playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[0].position;
-                        }
+                        playerListItemScript.leaderIcon.SetActive(true);
+                        playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[1].position;
                     }
                     else
                     {
-                        playerListItemScript.addFriendButton.SetActive(true);
-                        playerListItemScript.leaderIcon.transform.position = playerListItemScript.leaderIconsPos[1].position;
-                        if (playerManager.leader)
-                        {
-                            playerListItemScript.leaderIcon.SetActive(true);
-                            playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[2].position;
-                        }
-                        else
-                        {
-                            playerListItemScript.leaderIcon.SetActive(false);
-                            playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[1].position;
-                        }
+                        playerListItemScript.leaderIcon.SetActive(false);
+                        playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[0].position;
                     }
 
                     playerListItemScript.ready = playerManager.ready;
                     playerListItemScript.username = playerManager.username;
                     playerListItemScript.SetPlayerListItemValues();
+
+                    int kickId = GetKickId();
+                    if (kickId != 0)
+                    {
+                        if (playerManager == localPlayerManager)
+                        {
+                            localPlayerManager.LeaveLobby();
+                        }
+                    }
 
                     if (SceneManager.GetActiveScene().name == "Lobby")
                     {
@@ -382,7 +343,7 @@ public class GameManager : MonoBehaviour
 
                     if (playerManager == localPlayerManager)
                     {
-                        if (playerManager.leader)
+                        if (IsOwner())
                         {
                             startGameButton.interactable = AllReady();
                             endGameButton.interactable = true;
@@ -400,6 +361,19 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private int GetKickId()
+    {
+        foreach (PlayerManager playerManager in Manager.PlayerManagers)
+        {
+            if (IsOwner() && playerManager.playerToKickId != 0)
+            {
+                return playerManager.playerToKickId;
+            }
+        }
+
+        return 0;
     }
 
     private bool AllReady()
@@ -421,7 +395,7 @@ public class GameManager : MonoBehaviour
 
         foreach (PlayerListItem playerListItem in playerListItems)
         {
-            if (!Manager.PlayerManagers.Any(b => b.connectionId == playerListItem.connectionID))
+            if (!Manager.PlayerManagers.Any(b => b.connectionId == playerListItem.connectionId))
             {
                 playerListItemsToRemove.Add(playerListItem);
             }

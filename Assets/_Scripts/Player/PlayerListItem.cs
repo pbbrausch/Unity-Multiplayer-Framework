@@ -7,20 +7,21 @@ public class PlayerListItem : MonoBehaviour
 {
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private RawImage avatar;
+    [SerializeField] private Dropdown options;
 
     [Header("Leader Icons")]
-    public Transform[] leaderIconsPos;
     public GameObject leaderIcon;
 
     [Header("Ready Text")]
     public Transform[] readyTextsPos;
     public TMP_Text readyText;
 
-    public GameObject addFriendButton;
+    public GameObject optionsDropdown;
 
     [HideInInspector] public bool avatarRecieved;
     [HideInInspector] public ulong steamId;
-    [HideInInspector] public int connectionID;
+    [HideInInspector] public int playerIdNumber;
+    [HideInInspector] public int connectionId;
     [HideInInspector] public string username;
     [HideInInspector] public bool ready;
 
@@ -48,6 +49,31 @@ public class PlayerListItem : MonoBehaviour
 
         if (!avatarRecieved)
             GetPlayerAvatar();
+    }
+
+    public void OnSliderChanged()
+    {
+        if (playerIdNumber == GameManager.instance.localPlayerManager.playerIdNumber) { return; }
+
+        switch (options.value)
+        {
+            case 0:
+                AddFriend();
+                break;
+            case 1:
+                if (GameManager.instance.IsOwner())
+                {
+                    SteamMatchmaking.SetLobbyOwner((CSteamID)LobbyManager.instance.joinedLobbyID, (CSteamID)steamId);
+                    GameManager.instance.UpdatePlayersAndListItems();
+                }
+                break;
+            case 2:
+                if (GameManager.instance.IsOwner())
+                {
+                    GameManager.instance.AddKickPlayer(playerIdNumber);
+                }
+                break;
+        }
     }
 
     public void AddFriend()

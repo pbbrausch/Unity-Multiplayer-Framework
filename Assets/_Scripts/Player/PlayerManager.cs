@@ -3,6 +3,7 @@ using UnityEngine;
 using Steamworks;
 using Mirror;
 using TMPro;
+using System.Collections.Generic;
 
 public class PlayerManager : NetworkBehaviour
 {
@@ -19,12 +20,12 @@ public class PlayerManager : NetworkBehaviour
     [SyncVar] public ulong steamId;
     [SyncVar] public int playerIdNumber;
     [SyncVar] public int connectionId;
-    [SyncVar] public bool leader;
 
     //Player Info (updated)
     [SyncVar(hook = nameof(PlayerNameUpdate))] public string username;
     [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool ready;
     [SyncVar(hook = nameof(PlayerColorUpdate))] public Color color;
+    [SyncVar(hook = nameof(PlayerKickUpdate))] public int playerToKickId;
 
     public MeshRenderer mesh;
 
@@ -77,7 +78,7 @@ public class PlayerManager : NetworkBehaviour
     {
         if (isOwned)
         {
-            if (leader)
+            if (GameManager.instance.IsOwner())
             {
                 SteamMatchmaking.SetLobbyData((CSteamID)LobbyManager.instance.joinedLobbyID, "active", "false");
             }
@@ -104,6 +105,31 @@ public class PlayerManager : NetworkBehaviour
         Manager.PlayerManagers.Remove(this);
 
         GameManager.instance.UpdatePlayersAndListItems();
+    }
+
+    //Kick Player
+    [Command]
+    private void CmdAddKickPlayer(int playerIdNumber)
+    {
+        PlayerKickUpdate(playerToKickId, playerIdNumber);
+    }
+    public void PlayerKickUpdate(int oldValue, int newValue)
+    {
+        if (isServer)
+        {
+            playerToKickId = newValue;
+        }
+        if (isClient) //Client
+        {
+            GameManager.instance.UpdatePlayersAndListItems();
+        }
+    }
+    public void KickPlayer(int playerIdNumber)
+    {
+        if (isOwned)
+        {
+            CmdAddKickPlayer(playerIdNumber);
+        }
     }
 
     //Name
