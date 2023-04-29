@@ -499,7 +499,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 4124522382526162640}
   avatar: {fileID: 551180518081754392}
-  options: {fileID: 0}
+  options: {fileID: 507903403721780876}
   leaderIcon: {fileID: 9138127101194422745}
   readyTextsPos:
   - {fileID: 2212245483892277424}
@@ -508,7 +508,8 @@ MonoBehaviour:
   optionsDropdown: {fileID: 4419099295218250707}
   avatarRecieved: 0
   steamId: 0
-  connectionID: 0
+  playerIdNumber: 0
+  connectionId: 0
   username: 
   ready: 0
 --- !u!1 &4124522382526162642

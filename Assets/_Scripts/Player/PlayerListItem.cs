@@ -7,7 +7,7 @@ public class PlayerListItem : MonoBehaviour
 {
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private RawImage avatar;
-    [SerializeField] private Dropdown options;
+    [SerializeField] private TMP_Dropdown options;
 
     [Header("Leader Icons")]
     public GameObject leaderIcon;
