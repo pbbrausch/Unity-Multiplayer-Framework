@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     private CustomNetworkManager manager;
 
-    private CustomNetworkManager Manager
+    public CustomNetworkManager Manager
     {
         get
         {
@@ -61,11 +61,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    public bool IsOwner()
-    {
-        return SteamMatchmaking.GetLobbyOwner((CSteamID)LobbyManager.instance.joinedLobbyID) == (CSteamID)localPlayerManager.steamId;
     }
 
     private void SceneChanged(Scene current, Scene next)
@@ -230,7 +225,7 @@ public class GameManager : MonoBehaviour
             PlayerListItem playerListItemScript = playerListItem.GetComponent<PlayerListItem>();
 
             //PlayerListItemScript                        
-            if (IsOwner())
+            if (playerManager.leader)
             {
                 playerListItemScript.leaderIcon.SetActive(true);
                 playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[1].position;
@@ -268,7 +263,7 @@ public class GameManager : MonoBehaviour
                 PlayerListItem playerListItemScript = playerListItem.GetComponent<PlayerListItem>();
                
                 //PlayerListItemScript           s             
-                if (IsOwner())
+                if (playerManager.leader)
                 {
                     playerListItemScript.leaderIcon.SetActive(true);
                     playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[1].position;
@@ -311,7 +306,7 @@ public class GameManager : MonoBehaviour
                     playerManager.mesh.material = mat;
 
                     //PlayerListItemScript                        
-                    if (IsOwner())
+                    if (playerManager.leader)
                     {
                         playerListItemScript.leaderIcon.SetActive(true);
                         playerListItemScript.readyText.transform.position = playerListItemScript.readyTextsPos[1].position;
@@ -343,7 +338,7 @@ public class GameManager : MonoBehaviour
 
                     if (playerManager == localPlayerManager)
                     {
-                        if (IsOwner())
+                        if (playerManager.leader)
                         {
                             startGameButton.interactable = AllReady();
                             endGameButton.interactable = true;
@@ -367,7 +362,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (PlayerManager playerManager in Manager.PlayerManagers)
         {
-            if (IsOwner() && playerManager.playerToKickId != 0)
+            if (playerManager.leader && playerManager.playerToKickId != 0)
             {
                 return playerManager.playerToKickId;
             }

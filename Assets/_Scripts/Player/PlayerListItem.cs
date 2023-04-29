@@ -61,14 +61,22 @@ public class PlayerListItem : MonoBehaviour
                 AddFriend();
                 break;
             case 1:
-                if (GameManager.instance.IsOwner())
+                if (GameManager.instance.localPlayerManager.leader)
                 {
                     SteamMatchmaking.SetLobbyOwner((CSteamID)LobbyManager.instance.joinedLobbyID, (CSteamID)steamId);
+                    foreach (PlayerManager playerManager in GameManager.instance.Manager.PlayerManagers)
+                    {
+                        playerManager.leader = false;
+                        if ((CSteamID)playerManager.steamId == SteamMatchmaking.GetLobbyOwner((CSteamID)LobbyManager.instance.joinedLobbyID))
+                        {
+                            playerManager.leader = true;
+                        }
+                    }
                     GameManager.instance.UpdatePlayersAndListItems();
                 }
                 break;
             case 2:
-                if (GameManager.instance.IsOwner())
+                if (GameManager.instance.localPlayerManager.leader)
                 {
                     GameManager.instance.AddKickPlayer(playerIdNumber);
                 }

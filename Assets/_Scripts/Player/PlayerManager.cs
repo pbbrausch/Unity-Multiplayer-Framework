@@ -20,6 +20,7 @@ public class PlayerManager : NetworkBehaviour
     [SyncVar] public ulong steamId;
     [SyncVar] public int playerIdNumber;
     [SyncVar] public int connectionId;
+    [SyncVar] public bool leader;
 
     //Player Info (updated)
     [SyncVar(hook = nameof(PlayerNameUpdate))] public string username;
@@ -78,7 +79,7 @@ public class PlayerManager : NetworkBehaviour
     {
         if (isOwned)
         {
-            if (GameManager.instance.IsOwner())
+            if (leader)
             {
                 SteamMatchmaking.SetLobbyData((CSteamID)LobbyManager.instance.joinedLobbyID, "active", "false");
             }

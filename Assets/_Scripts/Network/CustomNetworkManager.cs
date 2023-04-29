@@ -13,6 +13,7 @@ public class CustomNetworkManager : NetworkManager
     {
         PlayerManager PlayerManagerInstance = Instantiate(playerManager);
 
+        PlayerManagerInstance.leader = SteamMatchmaking.GetNumLobbyMembers((CSteamID)LobbyManager.instance.joinedLobbyID) == 1;
         PlayerManagerInstance.connectionId = conn.connectionId;
         PlayerManagerInstance.playerIdNumber = PlayerManagers.Count + 1;
         PlayerManagerInstance.steamId = (ulong)SteamMatchmaking.GetLobbyMemberByIndex((CSteamID)LobbyManager.instance.joinedLobbyID, PlayerManagers.Count);
