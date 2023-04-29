@@ -185,6 +185,7 @@ MonoBehaviour:
   username: 
   ready: 0
   color: {r: 0, g: 0, b: 0, a: 0}
+  playerToKickSteamId: 0
   mesh: {fileID: 6058533192006284617}
 --- !u!136 &8940518441952987896
 CapsuleCollider:

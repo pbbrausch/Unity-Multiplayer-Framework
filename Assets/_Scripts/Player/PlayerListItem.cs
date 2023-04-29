@@ -20,11 +20,11 @@ public class PlayerListItem : MonoBehaviour
     public GameObject optionsDropdown;
 
     [HideInInspector] public bool avatarRecieved;
-    public ulong steamId;
-    public int playerIdNumber;
-    public int connectionId;
-    public string username;
-    public bool ready;
+    [HideInInspector] public ulong steamId;
+    [HideInInspector] public int playerIdNumber;
+    [HideInInspector] public int connectionId;
+    [HideInInspector] public string username;
+    [HideInInspector] public bool ready;
 
     protected Callback<AvatarImageLoaded_t> avatarImageLoaded;
 
