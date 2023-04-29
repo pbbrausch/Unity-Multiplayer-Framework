@@ -351,13 +351,12 @@ public class GameManager : MonoBehaviour
 
     public void KickPlayer()
     {
+        ulong kickId = GetKickId();
+
         foreach (PlayerManager playerManager in Manager.PlayerManagers)
         {
-            ulong kickId = GetKickId();
-            Debug.Log(kickId);
             if (playerManager.steamId == kickId && playerManager == localPlayerManager)
             {
-                Debug.Log("Kicked");
                 LeaveLobby();
             }
         }
